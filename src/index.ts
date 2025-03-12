@@ -8,6 +8,7 @@ async function main() {
   // Crear o leer la base de datos con esquema
   const defaultData: DBSchema = { posts: [] };
   const db = await JSONFilePreset<DBSchema>('db.json', defaultData);
+  console.log("oscar chupapollas");
 
   // Agregar un nuevo post
   db.data.posts.push('hello world');
