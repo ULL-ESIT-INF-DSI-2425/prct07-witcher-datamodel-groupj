@@ -1,1 +1,288 @@
-{ "posts": [] }
+{
+  "bienes": [
+    {
+      "id": 1,
+      "nombre": "Espada de Plata de Kaer Morhen",
+      "descripcion": "Forjada en los talleres de Kaer Morhen, ideal para combatir criaturas mágicas.",
+      "material": "Plata reforzada con esencia mágica",
+      "peso": 2.5,
+      "valor": 1500
+    },
+    {
+      "id": 2,
+      "nombre": "Elixir de Golondrina",
+      "descripcion": "Regenera vitalidad de manera acelerada.",
+      "material": "Mutágenos de nekkers y hierbas alquímicas",
+      "peso": 0.3,
+      "valor": 500
+    },
+    {
+      "id": 3,
+      "nombre": "Armadura de Placas Mahakamera",
+      "descripcion": "Fabricada por enanos, ofrece una defensa excepcional.",
+      "material": "Acero de Mahakam",
+      "peso": 25.0,
+      "valor": 3200
+    },
+    {
+      "id": 4,
+      "nombre": "Bestiario de Oxenfurt",
+      "descripcion": "Contiene información detallada sobre las criaturas del continente.",
+      "material": "Pergamino y tintas raras",
+      "peso": 1.2,
+      "valor": 250
+    },
+    {
+      "id": 5,
+      "nombre": "Poción de Gato",
+      "descripcion": "Permite visión nocturna temporalmente.",
+      "material": "Hierbas de marisma y esencia de espectro",
+      "peso": 0.2,
+      "valor": 350
+    },
+    {
+      "id": 6,
+      "nombre": "Ballesta de Loberos",
+      "descripcion": "Usada por la guardia de Novigrado para cazar bestias y criminales.",
+      "material": "Madera reforzada y cuerda de tendón de basilisco",
+      "peso": 4.0,
+      "valor": 1200
+    },
+    {
+      "id": 7,
+      "nombre": "Dagas Envenenadas de Skellige",
+      "descripcion": "Cubiertas con toxinas extraídas de sirenas del archipiélago.",
+      "material": "Acero templado con veneno",
+      "peso": 1.0,
+      "valor": 700
+    },
+    {
+      "id": 8,
+      "nombre": "Anillo de Signos Mayores",
+      "descripcion": "Potencia los signos de los hechiceros y brujos.",
+      "material": "Esencia de magia y oro élfico",
+      "peso": 0.5,
+      "valor": 2800
+    },
+    {
+      "id": 9,
+      "nombre": "Granada de Polvo de Luna",
+      "descripcion": "Detona con un resplandor que debilita a los licántropos.",
+      "material": "Plata pulverizada y pólvora especial",
+      "peso": 0.8,
+      "valor": 1500
+    },
+    {
+      "id": 10,
+      "nombre": "Botas de Viajero",
+      "descripcion": "Hechas de cuero de grifo, resistentes y cómodas para largas travesías.",
+      "material": "Cuero endurecido de grifo",
+      "peso": 3.5,
+      "valor": 950
+    },
+    {
+      "id": 11,
+      "nombre": "Pergamino de Teletransportación",
+      "descripcion": "Permite viajar instantáneamente a una ubicación predefinida.",
+      "material": "Papiro encantado con esencia de éter",
+      "peso": 0.1,
+      "valor": 2500
+    },
+    {
+      "id": 12,
+      "nombre": "Piedra de Runa Perun",
+      "descripcion": "Aumenta el daño de armas cuerpo a cuerpo con relámpagos.",
+      "material": "Cristal rúnico de los druidas",
+      "peso": 0.7,
+      "valor": 2000
+    },
+    {
+      "id": 13,
+      "nombre": "Cota de Malla de la Escuela del Gato",
+      "descripcion": "Ligera pero resistente, ideal para brujos ágiles.",
+      "material": "Acero reforzado con runas élficas",
+      "peso": 15.0,
+      "valor": 3500
+    },
+    {
+      "id": 14,
+      "nombre": "Garra de Grifo Encantada",
+      "descripcion": "Usada en alquimia para crear pociones avanzadas.",
+      "material": "Garra de grifo infundida con esencia de magia",
+      "peso": 0.4,
+      "valor": 1800
+    },
+    {
+      "id": 15,
+      "nombre": "Escudo de los Lobos Blancos",
+      "descripcion": "Escudo legendario portado por guerreros de Kaedwen.",
+      "material": "Acero endurecido y cuero de basilisco",
+      "peso": 10.5,
+      "valor": 2900
+    },
+    {
+      "id": 16,
+      "nombre": "Polvo de Vampiro Antiguo",
+      "descripcion": "Ingrediente raro en la elaboración de elixires poderosos.",
+      "material": "Residuos de vampiro superior",
+      "peso": 0.3,
+      "valor": 2200
+    },
+    {
+      "id": 17,
+      "nombre": "Hacha de Guerra de Skellige",
+      "descripcion": "Arma brutal de doble filo usada por los guerreros de las islas.",
+      "material": "Acero nórdico y hueso de leviatán",
+      "peso": 6.0,
+      "valor": 1600
+    },
+    {
+      "id": 18,
+      "nombre": "Medallón de la Escuela del Lobo",
+      "descripcion": "Reacciona ante la presencia de magia y monstruos.",
+      "material": "Plata encantada con esencia de brujo",
+      "peso": 0.5,
+      "valor": 2800
+    },
+    {
+      "id": 19,
+      "nombre": "Bolsa de Bombas Danza Estelar",
+      "descripcion": "Explosivos ligeros con efectos de fuego y destello.",
+      "material": "Pólvora de wyvern y sales ígneas",
+      "peso": 2.0,
+      "valor": 1300
+    },
+    {
+      "id": 20,
+      "nombre": "Elixir de Endriaga",
+      "descripcion": "Aumenta la resistencia al veneno durante varios minutos.",
+      "material": "Veneno de endriaga destilado",
+      "peso": 0.4,
+      "valor": 800
+    }
+  ],
+  "mercaderes": [
+    {
+      "id": 1,
+      "nombre": "Hattori",
+      "tipo": "Herrero",
+      "ubicacion": "Novigrado"
+    },
+    {
+      "id": 2,
+      "nombre": "Fergus Graem",
+      "tipo": "Herrero",
+      "ubicacion": "Crow's Perch"
+    },
+    {
+      "id": 3,
+      "nombre": "Yoana",
+      "tipo": "Herrera",
+      "ubicacion": "Crow's Perch"
+    },
+    {
+      "id": 4,
+      "nombre": "Gremist",
+      "tipo": "Alquimista",
+      "ubicacion": "Isla de Ard Skellig"
+    },
+    {
+      "id": 5,
+      "nombre": "Kurt Dysart",
+      "tipo": "Mercader de reliquias",
+      "ubicacion": "Novigrado"
+    },
+    {
+      "id": 6,
+      "nombre": "Éibhear Hattori",
+      "tipo": "Forjador de espadas",
+      "ubicacion": "Novigrado"
+    },
+    {
+      "id": 7,
+      "nombre": "Tienda de Velen",
+      "tipo": "Mercachifle",
+      "ubicacion": "Velen"
+    },
+    {
+      "id": 8,
+      "nombre": "Ramsmeat",
+      "tipo": "Traficante de armas",
+      "ubicacion": "Barrio de los Muelles"
+    },
+    {
+      "id": 9,
+      "nombre": "Bram",
+      "tipo": "Mercader general",
+      "ubicacion": "White Orchard"
+    },
+    {
+      "id": 10,
+      "nombre": "Marcus T.K. Hodgson",
+      "tipo": "Vendedor de libros",
+      "ubicacion": "Novigrado"
+    }
+  ],
+  "clientes": [
+    {
+      "id": 1,
+      "nombre": "Geralt de Rivia",
+      "raza": "Brujo",
+      "ubicacion": "Viajero"
+    },
+    {
+      "id": 2,
+      "nombre": "Lambert",
+      "raza": "Brujo",
+      "ubicacion": "Kaer Morhen"
+    },
+    {
+      "id": 3,
+      "nombre": "Eskel",
+      "raza": "Brujo",
+      "ubicacion": "Kaer Morhen"
+    },
+    {
+      "id": 4,
+      "nombre": "Vesemir",
+      "raza": "Brujo",
+      "ubicacion": "Kaer Morhen"
+    },
+    {
+      "id": 5,
+      "nombre": "Jaskier",
+      "raza": "Humano",
+      "ubicacion": "Novigrado"
+    },
+    {
+      "id": 6,
+      "nombre": "Zoltan Chivay",
+      "raza": "Enano",
+      "ubicacion": "Novigrado"
+    },
+    {
+      "id": 7,
+      "nombre": "Triss Merigold",
+      "raza": "Hechicera",
+      "ubicacion": "Kovir y Poviss"
+    },
+    {
+      "id": 8,
+      "nombre": "Yennefer de Vengerberg",
+      "raza": "Hechicera",
+      "ubicacion": "Viajera"
+    },
+    {
+      "id": 9,
+      "nombre": "Vernon Roche",
+      "raza": "Humano",
+      "ubicacion": "Campamento de los Blue Stripes"
+    },
+    {
+      "id": 10,
+      "nombre": "Letho de Guleta",
+      "raza": "Brujo",
+      "ubicacion": "Oculto"
+    }
+  ]
+}
