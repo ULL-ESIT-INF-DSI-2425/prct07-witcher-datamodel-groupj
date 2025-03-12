@@ -1,16 +1,19 @@
-import { JSONFilePreset } from 'lowdb/node';
+import { JSONFilePreset } from "lowdb/node";
+
+type DBSchema = {
+  posts: string[];
+};
 
 async function main() {
-  // Read or create db.json
-  const defaultData: { posts: string[] } = { posts: [] };
-  const db = await JSONFilePreset('db.json', defaultData);
+  // Crear o leer la base de datos con esquema
+  const defaultData: DBSchema = { posts: [] };
+  const db = await JSONFilePreset<DBSchema>('db.json', defaultData);
 
-  // Update db.json
-  await db.update(({ posts }) => posts.push('hello world'));
-
-  // Alternatively you can call db.write() explicitly later
+  // Agregar un nuevo post
   db.data.posts.push('hello world');
   await db.write();
+
+  console.log("📄 Base de datos actualizada:", db.data);
 }
 
 main().catch(console.error);
