@@ -1,7 +1,7 @@
 /**
  * Representa un bien (objeto) de la Posada del Lobo Blanco
  */
-export class Bien {
+export class Good { //TODO to document
   /**
    * @param id - Identificador único del bien.
    * @param nombre - Nombre del bien.
@@ -11,7 +11,7 @@ export class Bien {
    * @param valor - Valor en coronas.
    */
   constructor(
-    public id: string,
+    public id: number,
     public name: string,
     public description: string,
     public material: string,

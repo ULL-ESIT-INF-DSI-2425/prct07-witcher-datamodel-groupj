@@ -1,24 +1,19 @@
-import { JSONFilePreset } from "lowdb/node";
-//import { mainMenu } from "inquirer"
+//TODO Inquirer Interface & connect it to the main function
+//TODO Inventory part
+//TODO Dialogues
+//TODO Exceptions
+//TODO Documentation
+//TODO To search info abt base class for good/hunter/merchant
 
-type DBSchema = {
-  posts: string[];
-};
+import { mainMenu } from "./inquirer.js"
+
 
 async function main() {
-  // Crear o leer la base de datos con esquema
-  const defaultData: DBSchema = { posts: [] };
-  const db = await JSONFilePreset<DBSchema>('db.json', defaultData);
-
-  let petition = mainMenu();
-
-  db.data.posts.push(petition.jsonfify)
-
-  // Agregar un nuevo post
-  //db.data.posts.push('hello world');
-  //await db.write();
-
-  //console.log("📄 Base de datos actualizada:", db.data);
+  try {
+    mainMenu();
+  } catch(e) { //TODO To Create Various catchs for every exception
+    console.log(`Exception: {e}`);
+  }
 }
 
 main().catch(console.error);

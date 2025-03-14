@@ -1,7 +1,7 @@
 /**
  * Representa un cliente (objeto) de la Posada del Lobo Blanco
  */
-export class Cliente {
+export class Hunter { //TODO to document
     /**
    * @param id - Identificador único del bien. Unique good's identifier
    * @param nombre - Nombre del bien.
