@@ -55,7 +55,7 @@ async function manageGoods() {
         { type: 'number', name: 'weight', message: 'Weight:' },
         { type: 'number', name: 'value', message: 'Value in crowns:' },
       ]);
-      //goods.push({ id: goods.length + 1, ...newGood });
+      //goods.push({ id: goods.length + 1, ...newGood }); //TODO To Fix
       console.log('Good added');
       break;
     }

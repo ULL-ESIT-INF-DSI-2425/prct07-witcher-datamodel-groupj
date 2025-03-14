@@ -1,8 +1,9 @@
-//TODO Inquirer Interface & connect it to the main function
+//TODO Inquirer Interface
 //TODO Inventory part
 //TODO Dialogues
 //TODO Exceptions
 //TODO Documentation
+//TODO Test
 //TODO To search info abt base class for good/hunter/merchant
 
 import { mainMenu } from "./inquirer.js"
@@ -15,5 +16,3 @@ async function main() {
     console.log(`Exception: {e}`);
   }
 }
-
-main().catch(console.error);
