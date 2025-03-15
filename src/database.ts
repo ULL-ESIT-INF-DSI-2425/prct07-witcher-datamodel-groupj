@@ -2,6 +2,7 @@ import { JSONFilePreset } from "lowdb/node";
 import { Good } from "./good.js";
 import { Merchant } from "./merchant.js";
 import { Hunter } from "./hunter.js";
+import { Sale, Purchase, Return } from "./transaction.js"
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -12,9 +13,12 @@ type DBSchema = {
     goods: Good[];
     merchants: Merchant[];
     hunters: Hunter[];
+    sales: Sale[];
+    purchases: Purchase[];
+    returns: Return[];
 };
 
-const defaultData: DBSchema = { goods: [],  merchants: [], hunters: []};
+const defaultData: DBSchema = { goods: [],  merchants: [], hunters: [], sales: [], purchases: [], returns: []};
 
 export class Database { //TODO to document
     private db!: Awaited<ReturnType<typeof JSONFilePreset<DBSchema>>>;
@@ -123,5 +127,47 @@ export class Database { //TODO to document
     deleteHunter(id: number): void {
         this.db.data.hunters = this.db.data.hunters.filter(hunter => hunter.id !== id);
         this.save();
+    }
+
+    addSale(sale: Sale): void {
+        this.db.data.sales.push(sale);
+        this.save();
+    }
+
+    addPurchase(purchase: Purchase): void {
+        this.db.data.purchases.push(purchase);
+        this.save();
+    }
+
+    addReturn(returnn: Return): void {
+        this.db.data.returns.push(returnn);
+        this.save();
+    }
+
+    deleteSale(id: number): void {
+        this.db.data.sales = this.db.data.sales.filter(sale => sale.id !== id);
+        this.save();
+    }
+
+    deletePurchase(id: number): void {
+        this.db.data.purchases = this.db.data.purchases.filter(purchase => purchase.id !== id);
+        this.save();
+    }
+
+    deleteReturn(id: number): void {
+        this.db.data.returns = this.db.data.returns.filter(returnn => returnn.id !== id);
+        this.save();
+    }
+
+    getAllSales(): Sale[] {
+        return this.db.data.sales;
+    }
+
+    getAllPurchases(): Purchase[] {
+        return this.db.data.purchases;
+    }
+    
+    getAllReturns(): Return[] {
+        return this.db.data.returns;
     }
 }

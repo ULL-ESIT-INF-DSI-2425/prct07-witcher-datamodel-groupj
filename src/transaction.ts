@@ -2,7 +2,7 @@ import { Good } from "./good.js";
 
 export class Sale {
   constructor(
-    public id: string,
+    public id: number,
     public date: Date,
     public hunterId: number,
     public itemsSold: Good[],
@@ -12,7 +12,7 @@ export class Sale {
 
 export class Purchase {
   constructor(
-    public id: string,
+    public id: number,
     public date: Date,
     public merchantId: number,
     public itemsPurchased: Good[],
@@ -22,7 +22,7 @@ export class Purchase {
 
 export class Return {
   constructor(
-    public id: string,
+    public id: number,
     public date: Date,
     public customerId: number,
     public itemsReturned: Good[]

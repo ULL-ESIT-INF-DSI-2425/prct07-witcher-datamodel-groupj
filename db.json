@@ -6,7 +6,8 @@
       "description": "Forjada en los talleres de Kaer Morhen, ideal para combatir criaturas mágicas.",
       "material": "Plata reforzada con esencia mágica",
       "weight": 2.5,
-      "value": 1500
+      "value": 32,
+      "quantity": 5
     },
     {
       "id": 2,
@@ -14,7 +15,8 @@
       "description": "Regenera vitalidad de manera acelerada.",
       "material": "Mutágenos de nekkers y hierbas alquímicas",
       "weight": 0.3,
-      "value": 500
+      "value": 500,
+      "quantity": 12
     },
     {
       "id": 3,
@@ -22,7 +24,8 @@
       "description": "Fabricada por enanos, ofrece una defensa excepcional.",
       "material": "Acero de Mahakam",
       "weight": 25,
-      "value": 3200
+      "value": 3200,
+      "quantity": 3
     },
     {
       "id": 4,
@@ -30,7 +33,8 @@
       "description": "Contiene información detallada sobre las criaturas del continente.",
       "material": "Pergamino y tintas raras",
       "weight": 1.2,
-      "value": 250
+      "value": 250,
+      "quantity": 5
     },
     {
       "id": 5,
@@ -38,7 +42,8 @@
       "description": "Permite visión nocturna temporalmente.",
       "material": "Hierbas de marisma y esencia de espectro",
       "weight": 0.2,
-      "value": 350
+      "value": 350,
+      "quantity": 8
     },
     {
       "id": 6,
@@ -46,7 +51,8 @@
       "description": "Usada por la guardia de Novigrado para cazar bestias y criminales.",
       "material": "Madera reforzada y cuerda de tendón de basilisco",
       "weight": 4,
-      "value": 1200
+      "value": 1200,
+      "quantity": 9
     },
     {
       "id": 7,
@@ -54,7 +60,8 @@
       "description": "Cubiertas con toxinas extraídas de sirenas del archipiélago.",
       "material": "Acero templado con veneno",
       "weight": 1,
-      "value": 700
+      "value": 700,
+      "quantity": 12
     },
     {
       "id": 8,
@@ -62,7 +69,8 @@
       "description": "Potencia los signos de los hechiceros y brujos.",
       "material": "tegueste",
       "weight": 0.5,
-      "value": 2800
+      "value": 2800,
+      "quantity": 7
     },
     {
       "id": 9,
@@ -70,7 +78,8 @@
       "description": "Detona con un resplandor que debilita a los licántropos.",
       "material": "Plata pulverizada y pólvora especial",
       "weight": 0.8,
-      "value": 1500
+      "value": 1500,
+      "quantity": 9
     },
     {
       "id": 10,
@@ -78,7 +87,8 @@
       "description": "Hechas de cuero de grifo, resistentes y cómodas para largas travesías.",
       "material": "Cuero endurecido de grifo",
       "weight": 3.5,
-      "value": 950
+      "value": 950,
+      "quantity": 1
     },
     {
       "id": 11,
@@ -86,7 +96,8 @@
       "description": "Permite viajar instantáneamente a una ubicación predefinida.",
       "material": "testing loco",
       "weight": 0.1,
-      "value": 2500
+      "value": 2500,
+      "quantity": 13
     },
     {
       "id": 12,
@@ -94,7 +105,8 @@
       "description": "Aumenta el daño de armas cuerpo a cuerpo con relámpagos.",
       "material": "Cristal rúnico de los druidas",
       "weight": 0.7,
-      "value": 2000
+      "value": 2000,
+      "quantity": 3
     },
     {
       "id": 13,
@@ -102,7 +114,8 @@
       "description": "Ligera pero resistente, ideal para brujos ágiles.",
       "material": "Acero reforzado con runas élficas",
       "weight": 15,
-      "value": 3500
+      "value": 3500,
+      "quantity": 3
     },
     {
       "id": 14,
@@ -110,7 +123,8 @@
       "description": "Usada en alquimia para crear pociones avanzadas.",
       "material": "Garra de grifo infundida con esencia de magia",
       "weight": 0.4,
-      "value": 1800
+      "value": 1800,
+      "quantity": 3
     },
     {
       "id": 15,
@@ -118,7 +132,8 @@
       "description": "Escudo legendario portado por guerreros de Kaedwen.",
       "material": "Acero endurecido y cuero de basilisco",
       "weight": 10.5,
-      "value": 2900
+      "value": 2900,
+      "quantity": 30
     },
     {
       "id": 16,
@@ -126,7 +141,8 @@
       "description": "Ingrediente raro en la elaboración de elixires poderosos.",
       "material": "Residuos de vampiro superior",
       "weight": 0.3,
-      "value": 2200
+      "value": 2200,
+      "quantity": 38
     },
     {
       "id": 17,
@@ -134,7 +150,8 @@
       "description": "Arma brutal de doble filo usada por los guerreros de las islas.",
       "material": "Acero nórdico y hueso de leviatán",
       "weight": 6,
-      "value": 1600
+      "value": 1600,
+      "quantity": 5
     },
     {
       "id": 18,
@@ -142,7 +159,8 @@
       "description": "Reacciona ante la presencia de magia y monstruos.",
       "material": "Plata encantada con esencia de brujo",
       "weight": 0.5,
-      "value": 2800
+      "value": 2800,
+      "quantity": 2
     },
     {
       "id": 19,
@@ -150,7 +168,8 @@
       "description": "Explosivos ligeros con efectos de fuego y destello.",
       "material": "Pólvora de wyvern y sales ígneas",
       "weight": 2,
-      "value": 1300
+      "value": 1300,
+      "quantity": 10
     },
     {
       "id": 20,
@@ -158,15 +177,8 @@
       "description": "Aumenta la resistencia al veneno durante varios minutos.",
       "material": "Veneno de endriaga destilado",
       "weight": 0.4,
-      "value": 800
-    },
-    {
-      "id": 21,
-      "name": "test",
-      "description": "Ingrediente locurote",
-      "material": "ttt",
-      "weight": 3,
-      "value": 3
+      "value": 800,
+      "quantity": 23
     }
   ],
   "merchants": [
@@ -291,6 +303,62 @@
       "name": "Letho de Guleta",
       "race": "Brujo",
       "location": "Oculto"
+    }
+  ],
+  "sales": [
+    {
+      "id": 1,
+      "date": "02/12/1954",
+      "hunterId": 1,
+      "itemsSold": [
+        {
+          "id": 2,
+          "name": "Elixir de Golondrina",
+          "description": "Regenera vitalidad de manera acelerada.",
+          "material": "Mutágenos de nekkers y hierbas alquímicas",
+          "weight": 0.3,
+          "value": 500,
+          "quantity": 12
+        }
+      ],
+      "totalAmount": 500
+    }
+  ],
+  "purchases": [
+    {
+      "id": 1,
+      "date": "14/04/1925",
+      "merchantId": 3,
+      "itemsPurchased": [
+        {
+          "id": 5,
+          "name": "Poción de Gato",
+          "description": "Permite visión nocturna temporalmente.",
+          "material": "Hierbas de marisma y esencia de espectro",
+          "weight": 0.2,
+          "value": 350,
+          "quantity": 8
+        }
+      ],
+      "totalAmount": 2800
+    }
+  ],
+  "returns": [
+    {
+      "id": 1,
+      "date": "24/10/2003",
+      "customerId": 2,
+      "itemsReturned": [
+        {
+          "id": 7,
+          "name": "Dagas Envenenadas de Skellige",
+          "description": "Cubiertas con toxinas extraídas de sirenas del archipiélago.",
+          "material": "Acero templado con veneno",
+          "weight": 1,
+          "value": 700,
+          "quantity": 2
+        }
+      ]
     }
   ]
 }

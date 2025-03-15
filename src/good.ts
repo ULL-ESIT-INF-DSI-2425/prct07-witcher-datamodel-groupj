@@ -16,6 +16,7 @@ export class Good {
     public description: string,
     public material: string,
     public weight: number,
-    public value: number
+    public value: number,
+    public quantity: number
   ) {}
 }

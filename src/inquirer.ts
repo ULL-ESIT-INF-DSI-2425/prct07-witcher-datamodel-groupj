@@ -3,6 +3,7 @@ import { Good } from "./good.js";
 import { Merchant } from "./merchant.js";
 import { Hunter } from "./hunter.js";
 import { Database } from "./database.js";
+import { Sale, Purchase, Return } from "./transaction.js"
 
 const db = new Database();
 
@@ -12,7 +13,7 @@ export async function mainMenu(db: Database) {
       type: 'list',
       name: 'action',
       message: '🐺 The White Wolf Inn 🐺',
-      choices: ['Manage Goods', 'Manage Merchants', 'Manage Hunters', 'Exit'],
+      choices: ['Manage Goods', 'Manage Merchants', 'Manage Hunters', 'Manage Transactions', 'Exit'],
     },
   ]);
 
@@ -25,6 +26,9 @@ export async function mainMenu(db: Database) {
       break;
     case 'Manage Hunters':
       await manageHunters(db);
+      break;
+    case 'Manage Transactions':
+      await manageTransactions(db);
       break;
     case 'Exit':
       console.log("🌿 Farewell, traveler 🌿");
@@ -40,7 +44,7 @@ async function manageGoods(db: Database) {
       type: 'list',
       name: 'action',
       message: 'Select an action for Goods',
-      choices: ['Add a Good', 'List Goods', 'Delete a Good', 'Search Goods', 'Update Good' ,'Back'],
+      choices: ['Add a Good', 'List Goods', 'Delete a Good', 'Search Goods', 'Update Good' , 'Stock' ,'Back'],
     },
   ]);
 
@@ -106,6 +110,20 @@ async function manageGoods(db: Database) {
       if (goodToDelete === "back") break;
       await db.deleteGood(goodToDelete);
       console.log("❌ Good removed.");
+      break;
+    }
+    case 'Stock': {
+      const goodsList = db.getAllGoods();
+      if (goodsList.length === 0) {
+      console.log("⚠️ No goods found.");
+      } else {
+      let totalQuantity = 0;
+      goodsList.forEach(good => {
+        console.log(`Good: ${good.name}, Quantity: ${good.quantity}`);
+        totalQuantity += good.quantity;
+      });
+      console.log(`Total Stock: ${totalQuantity}`);
+      }
       break;
     }
 
@@ -581,4 +599,239 @@ async function updateHunter(db: Database) {
 
   await db.updateHunter(hunterToUpdate, updateData);
   console.log("✅ Hunter updated successfully!");
+}
+
+async function manageTransactions(db: Database) {
+  const { action } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'action',
+      message: 'Type of transaction to manage:',
+      choices: ['Sells', 'Purchases', 'Returns', 'Back'],
+    },
+  ]);
+
+  switch (action) {
+    case 'Sells': {
+      const { sellAction } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'sellAction',
+        message: 'Select an action for Sells',
+        choices: ['Add a Sale', 'Delete a Sale', 'List Sales', 'Back'],
+      },
+      ]);
+
+      switch (sellAction) {
+      case 'Add a Sale': {
+        const newSale = await inquirer.prompt([
+        { type: 'number', name: 'hunterId', message: 'Hunter ID:' },
+        { type: 'number', name: 'quantity', message: 'Quantity:' },
+        { type: 'number', name: 'price', message: 'Price per unit:' },
+        { type: 'number', name: 'goodId', message: 'Good ID:' },
+        { type: 'input', name: 'date', message: 'Date: ' }
+        ]);
+
+        const good = db.getGoodByID(Number(newSale.goodId));
+        if (!good) {
+          console.log("⚠️ Good not found.");
+          break;
+        }
+
+        const sale = new Sale(
+        db.getAllSales().length + 1, // Generate a unique ID
+        newSale.date,
+        Number(newSale.hunterId),
+        [new Good(good.id, good.name, good.description, good.material, good.weight, newSale.price, newSale.quantity)],
+        newSale.price * newSale.quantity
+        );
+
+        await db.addSale(sale);
+        console.log('✅ Sale added');
+        break;
+      }
+      case 'Delete a Sale': {
+        const salesList = db.getAllSales();
+        if (salesList.length === 0) {
+        console.log("⚠️ No sales available to delete.");
+        break;
+        }
+
+        const { saleToDelete } = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'saleToDelete',
+          message: 'Select the Sale to delete:',
+          choices: [...salesList.map(sale => ({ name: `Sale ID: ${sale.id}`, value: sale.id })), 
+          { name: "🔙 Back", value: "back" }],
+        },
+        ]);
+
+        if (saleToDelete === "back") break;
+        await db.deleteSale(saleToDelete);
+        console.log("❌ Sale removed.");
+        break;
+      }
+      case 'List Sales':
+        if (db.getAllSales().length === 0) {
+        console.log("⚠️ No sales found.");
+        } else {
+        console.table(db.getAllSales());
+        }
+        break;
+      case 'Back':
+        return;
+      }
+
+      break;
+    }
+    case 'Purchases': {
+      const { purchaseAction } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'purchaseAction',
+        message: 'Select an action for Purchases',
+        choices: ['Add a Purchase', 'Delete a Purchase', 'List Purchases', 'Back'],
+      },
+      ]);
+
+      switch (purchaseAction) {
+      case 'Add a Purchase': {
+        const newPurchase = await inquirer.prompt([
+        { type: 'input', name: 'merchantId', message: 'Merchant ID:' },
+        { type: 'number', name: 'quantity', message: 'Quantity:' },
+        { type: 'number', name: 'price', message: 'Price per unit:' },
+        { type: 'input', name: 'date', message: 'Date: ' },
+        { type: 'number', name: 'goodId', message: 'Good ID:' }
+        ]);
+
+        const good = db.getGoodByID(Number(newPurchase.goodId));
+        if (!good) {
+        console.log("⚠️ Good not found.");
+        break;
+        }
+
+        const purchase = new Purchase(
+        db.getAllPurchases().length + 1, // Generate a unique ID
+        newPurchase.date,
+        Number(newPurchase.merchantId),
+        [new Good(good.id, good.name, good.description, good.material, good.weight, newPurchase.price, newPurchase.quantity)],
+        newPurchase.price * newPurchase.quantity
+        );
+
+        await db.addPurchase(purchase);
+        console.log('✅ Purchase added');
+        break;
+      }
+      case 'Delete a Purchase': {
+        const purchasesList = db.getAllPurchases();
+        if (purchasesList.length === 0) {
+        console.log("⚠️ No purchases available to delete.");
+        break;
+        }
+
+        const { purchaseToDelete } = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'purchaseToDelete',
+          message: 'Select the Purchase to delete:',
+          choices: [...purchasesList.map(purchase => ({ name: `Purchase ID: ${purchase.id}`, value: purchase.id })), 
+          { name: "🔙 Back", value: "back" }],
+        },
+        ]);
+
+        if (purchaseToDelete === "back") break;
+        await db.deletePurchase(purchaseToDelete);
+        console.log("❌ Purchase removed.");
+        break;
+      }
+      case 'List Purchases':
+        if (db.getAllPurchases().length === 0) {
+        console.log("⚠️ No purchases found.");
+        } else {
+        console.table(db.getAllPurchases());
+        }
+        break;
+      case 'Back':
+        return;
+      }
+
+      break;
+    }
+    case 'Returns': {
+      const { returnAction } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'returnAction',
+        message: 'Select an action for Returns',
+        choices: ['Add a Return', 'Delete a Return', 'List Returns', 'Back'],
+      },
+      ]);
+
+      switch (returnAction) {
+      case 'Add a Return': {
+        const newReturn = await inquirer.prompt([
+        { type: 'input', name: 'goodId', message: 'Good ID:' },
+        { type: 'input', name: 'merchantId', message: 'Merchant ID:' },
+        { type: 'number', name: 'quantity', message: 'Quantity:' },
+        { type: 'number', name: 'price', message: 'Price per unit:' }
+        ]);
+
+        const good = db.getGoodByID(Number(newReturn.goodId));
+        if (!good) {
+        console.log("⚠️ Good not found.");
+        break;
+        }
+
+        const returnTransaction = new Return(
+        db.getAllReturns().length + 1, // Generate a unique ID
+        new Date(),
+        Number(newReturn.merchantId),
+        [new Good(good.id, good.name, good.description, good.material, good.weight, newReturn.price, newReturn.quantity)]
+        );
+
+        await db.addReturn(returnTransaction);
+        console.log('✅ Return added');
+        break;
+      }
+      case 'Delete a Return': {
+        const returnsList = db.getAllReturns();
+        if (returnsList.length === 0) {
+        console.log("⚠️ No returns available to delete.");
+        break;
+        }
+
+        const { returnToDelete } = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'returnToDelete',
+          message: 'Select the Return to delete:',
+          choices: [...returnsList.map(returnTransaction => ({ name: `Return ID: ${returnTransaction.id}`, value: returnTransaction.id })), 
+          { name: "🔙 Back", value: "back" }],
+        },
+        ]);
+
+        if (returnToDelete === "back") break;
+        await db.deleteReturn(returnToDelete);
+        console.log("❌ Return removed.");
+        break;
+      }
+      case 'List Returns':
+        if (db.getAllReturns().length === 0) {
+        console.log("⚠️ No returns found.");
+        } else {
+        console.table(db.getAllReturns());
+        }
+        break;
+      case 'Back':
+        return;
+      }
+
+      break;
+    }
+    case 'Back':
+      return;
+  }
+
+  await manageTransactions(db);
 }
