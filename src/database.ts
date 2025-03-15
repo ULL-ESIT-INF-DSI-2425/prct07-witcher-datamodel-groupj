@@ -2,13 +2,18 @@ import { JSONFilePreset } from "lowdb/node";
 import { Good } from "./good.js";
 import { Merchant } from "./merchant.js";
 import { Hunter } from "./hunter.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 type DBSchema = {
     goods: Good[];
     merchants: Merchant[];
     hunters: Hunter[];
 };
+
 const defaultData: DBSchema = { goods: [],  merchants: [], hunters: []};
 
 export class Database { //TODO to document
@@ -21,19 +26,17 @@ export class Database { //TODO to document
     constructor() {}
 
     async init() {
-        this.db = await JSONFilePreset<DBSchema>('db.json', defaultData);
-        console.log("📦 Base de datos inicializada.");
+        const dbPath = path.resolve(__dirname, "../db.json");
+        this.db = await JSONFilePreset<DBSchema>(dbPath, defaultData);
+        await this.db.read();
+        console.log("📦 Posada del Lobo Blanco.");
     }
 
-    getAllGoods(): Good[] { return this.db.data.goods; }
+    getAllGoods(): Good[] {
+        return this.db.data.goods;
+    }
     getAllMerchants(): Merchant[] { return this.db.data.merchants; }
     getAllHunters(): Hunter[] { return this.db.data.hunters; }
-
-    //TODO por hacer un sort del output de cada getALlGoods
-    //getAllGoodsSortedAlphUp(): Good[] { return this.getAllGoods; }
-    //getAllGoodsSortedAlphDown(): Good[] { return this.getAllGoods; }
-    //getAllGoodsSortedCrownsUp(): Good[] { return this.getAllGoods; }
-    //getAllGoodsSortedCrownsDown(): Good[] { return this.getAllGoods; }
 
     getGoodByID(id: number): Good | undefined {
         return this.db.data.goods.find(good => good.id === id);
