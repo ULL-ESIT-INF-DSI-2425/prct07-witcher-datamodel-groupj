@@ -52,6 +52,7 @@ async function manageGoods(db: Database) {
         { type: 'input', name: 'material', message: 'Material:' },
         { type: 'number', name: 'weight', message: 'Weight:' },
         { type: 'number', name: 'value', message: 'Value in crowns:' },
+        { type: 'number', name: 'quantity', message: 'Good quantity: ' }
       ]);
 
       const good = new Good(
@@ -60,7 +61,8 @@ async function manageGoods(db: Database) {
         newGood.description,
         newGood.material,
         newGood.weight,
-        newGood.value
+        newGood.value,
+        newGood.quantity
       );
 
       await db.addGood(good);
@@ -428,7 +430,7 @@ async function updateGood(db: Database) {
       type: "list",
       name: "fieldToUpdate",
       message: "Which field do you want to update?",
-      choices: ["Name", "Description", "Material", "Weight", "Value", "Cancel"],
+      choices: ["Name", "Description", "Material", "Weight", "Value", "Quantity",  "Cancel"],
     },
   ]);
 
@@ -461,6 +463,9 @@ async function updateGood(db: Database) {
       break;
     case "Value":
       updateData.value = Number(newValue);
+      break;
+    case "Quantity":
+      updateData.quantity = Number(newValue);
       break;
   }
 
