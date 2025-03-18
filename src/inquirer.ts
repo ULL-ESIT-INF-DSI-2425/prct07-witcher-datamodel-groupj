@@ -13,7 +13,7 @@ export async function mainMenu(db: Database) {
       type: 'list',
       name: 'action',
       message: '🐺 The White Wolf Inn 🐺',
-      choices: ['Manage Goods', 'Manage Merchants', 'Manage Hunters', 'Manage Transactions', 'Exit'],
+      choices: ['Manage Goods', 'Manage Merchants', 'Manage Hunters', 'Manage Transactions', 'Reports', 'Exit'],
     },
   ]);
 
@@ -29,6 +29,9 @@ export async function mainMenu(db: Database) {
       break;
     case 'Manage Transactions':
       await manageTransactions(db);
+      break;
+    case 'Reports':
+      await manageReports(db);
       break;
     case 'Exit':
       console.log("🌿 Farewell, traveler 🌿");
@@ -899,4 +902,81 @@ async function manageTransactions(db: Database) {
   }
 
   await manageTransactions(db);
+}
+
+async function manageReports(db: Database) {
+  const { reportAction } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'reportAction',
+      message: 'Select a report:',
+      choices: ['Best-selling item', 'Most in-demand item', 'Back']
+    }
+  ]);
+
+  switch (reportAction) {
+    case 'Best-selling item': {
+      const purchases = db.getAllPurchases();
+      if (purchases.length === 0) {
+        console.log("⚠️ No purchases found.");
+        break;
+      }
+
+      const counts: Record<number, { name: string; total: number }> = {};
+      for (const purchase of purchases) {
+        for (const item of purchase.itemsPurchased) {
+          // Sumar la cantidad (propiedad quantity) de cada item
+          if (!counts[item.id]) {
+            counts[item.id] = { name: item.name, total: item.quantity };
+          } else {
+            counts[item.id].total += item.quantity;
+          }
+        }
+      }
+
+      let bestSelling: { name: string; total: number } | null = null;
+      for (const key in counts) {
+        if (!bestSelling || counts[key].total > bestSelling.total) {
+          bestSelling = counts[key];
+        }
+      }
+      if (bestSelling) {
+        console.log(`⭐ Best-selling item: ${bestSelling.name} with ${bestSelling.total} units purchased.`);
+      }
+      break;
+    }
+    case 'Most in-demand item': {
+      const sales = db.getAllSales();
+      if (sales.length === 0) {
+        console.log("⚠️ No sales found.");
+        break;
+      }
+
+      const counts: Record<number, { name: string; total: number }> = {};
+      for (const sale of sales) {
+        for (const item of sale.itemsSold) {
+          if (!counts[item.id]) {
+            counts[item.id] = { name: item.name, total: item.quantity };
+          } else {
+            counts[item.id].total += item.quantity;
+          }
+        }
+      }
+
+      let mostInDemand: { name: string; total: number } | null = null;
+      for (const key in counts) {
+        if (!mostInDemand || counts[key].total > mostInDemand.total) {
+          mostInDemand = counts[key];
+        }
+      }
+      if (mostInDemand) {
+        console.log(`🔥 Most in-demand item: ${mostInDemand.name} with ${mostInDemand.total} units sold.`);
+      }
+      break;
+    }
+    case 'Back':
+      return;
+  }
+
+  await manageReports(db);
 }

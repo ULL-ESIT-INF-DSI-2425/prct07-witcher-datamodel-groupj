@@ -52,7 +52,7 @@
       "material": "Madera reforzada y cuerda de tendón de basilisco",
       "weight": 4,
       "value": 1200,
-      "quantity": 9
+      "quantity": 5
     },
     {
       "id": 7,
@@ -322,6 +322,23 @@
         }
       ],
       "totalAmount": 500
+    },
+    {
+      "id": 2,
+      "date": "24/12/2015",
+      "hunterId": 3,
+      "itemsSold": [
+        {
+          "id": 6,
+          "name": "Ballesta de Loberos",
+          "description": "Usada por la guardia de Novigrado para cazar bestias y criminales.",
+          "material": "Madera reforzada y cuerda de tendón de basilisco",
+          "weight": 4,
+          "value": 12,
+          "quantity": 4
+        }
+      ],
+      "totalAmount": 48
     }
   ],
   "purchases": [
