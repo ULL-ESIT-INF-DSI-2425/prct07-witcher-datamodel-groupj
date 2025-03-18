@@ -672,13 +672,21 @@ async function manageTransactions(db: Database) {
         console.log("❌ Sale removed.");
         break;
       }
-      case 'List Sales':
-        if (db.getAllSales().length === 0) {
-        console.log("⚠️ No sales found.");
+      case 'List Sales': {
+        const sales = db.getAllSales();
+        if (sales.length === 0) {
+            console.log("⚠️ No sales found.");
         } else {
-        console.table(db.getAllSales());
+            const formattedSales = sales.map(sale => ({
+                ID: sale.id,
+                Date: sale.date,
+                HunterID: sale.hunterId,
+                ItemsSold: sale.itemsSold.map(item => item.name).join(", "),
+            }));
+            console.table(formattedSales);
         }
         break;
+      }
       case 'Back':
         return;
       }
@@ -745,13 +753,22 @@ async function manageTransactions(db: Database) {
         console.log("❌ Purchase removed.");
         break;
       }
-      case 'List Purchases':
-        if (db.getAllPurchases().length === 0) {
-        console.log("⚠️ No purchases found.");
+      case 'List Purchases': {
+        const purchases = db.getAllPurchases();
+        if (purchases.length === 0) {
+          console.log("⚠️ No sales found.");
         } else {
-        console.table(db.getAllPurchases());
+          const formattedPurchases = purchases.map(purchase => ({
+            ID: purchase.id,
+            Date: purchase.date,
+            MerchantID: purchase.merchantId,
+            ItemsPurchased: purchase.itemsPurchased.map(item => item.name).join(", "),
+            TotalAmount: purchase.totalAmount
+          }));
+          console.table(formattedPurchases);
         }
         break;
+      }
       case 'Back':
         return;
       }
@@ -816,13 +833,20 @@ async function manageTransactions(db: Database) {
         console.log("❌ Return removed.");
         break;
       }
-      case 'List Returns':
-        if (db.getAllReturns().length === 0) {
-        console.log("⚠️ No returns found.");
+      case 'List Returns': {
+        const returns = db.getAllReturns();
+        if (returns.length === 0) {
+          console.log("No returns found.");
         } else {
-        console.table(db.getAllReturns());
+          const formattedReturns = returns.map(returnn => ({
+            ID: returnn.id,
+            Date: returnn.date,
+            CustomerID: returnn.customerId,
+            ItemsReturned: returnn.itemsReturned.map(item => item.name).join(", ")
+          }));
         }
         break;
+      }
       case 'Back':
         return;
       }
