@@ -637,6 +637,11 @@ async function manageTransactions(db: Database) {
           console.log("⚠️ Good not found.");
           break;
         }
+        const hunter = db.getHunterByID(Number(newSale.hunterId));
+        if (!hunter) {
+          console.log("⚠️ Hunter not found.");
+          break;
+        }
 
         const sale = new Sale(
         db.getAllSales().length + 1, // Generate a unique ID
@@ -647,6 +652,15 @@ async function manageTransactions(db: Database) {
         );
 
         await db.addSale(sale);
+
+        const newQuantity = good.quantity - newSale.quantity;
+        if (newQuantity <= 0) {
+          await db.deleteGood(good.id);
+          console.log(`❌ ${good.name} were out of stock and was eliminated from the inventory.`);
+        } else {
+          await db.updateGood(good.id, { quantity: newQuantity });
+        }
+
         console.log('✅ Sale added');
         break;
       }
@@ -706,18 +720,24 @@ async function manageTransactions(db: Database) {
       switch (purchaseAction) {
       case 'Add a Purchase': {
         const newPurchase = await inquirer.prompt([
-        { type: 'input', name: 'merchantId', message: 'Merchant ID:' },
-        { type: 'number', name: 'quantity', message: 'Quantity:' },
-        { type: 'number', name: 'price', message: 'Price per unit:' },
-        { type: 'input', name: 'date', message: 'Date: ' },
-        { type: 'number', name: 'goodId', message: 'Good ID:' }
+          { type: 'input', name: 'merchantId', message: 'Merchant ID:' },
+          { type: 'number', name: 'quantity', message: 'Quantity:' },
+          { type: 'number', name: 'price', message: 'Price per unit:' },
+          { type: 'input', name: 'date', message: 'Date: ' },
+          { type: 'number', name: 'goodId', message: 'Good ID:' }
         ]);
 
         const good = db.getGoodByID(Number(newPurchase.goodId));
         if (!good) {
-        console.log("⚠️ Good not found.");
-        break;
+          console.log("⚠️ Good not found.");
+          break;
         }
+        const merchant = db.getMerchantByID(Number(newPurchase.merchantId));
+        if (!merchant) {
+          console.log("⚠️ Merchant not found.");
+          break;
+        }
+
 
         const purchase = new Purchase(
         db.getAllPurchases().length + 1, // Generate a unique ID
@@ -728,6 +748,14 @@ async function manageTransactions(db: Database) {
         );
 
         await db.addPurchase(purchase);
+
+        const newQuantity = good.quantity - newPurchase.quantity;
+        if (newQuantity <= 0) {
+          await db.deleteGood(good.id);
+          console.log(`❌ ${good.name} were out of stock and was eliminated from the inventory.`);
+        } else {
+          await db.updateGood(good.id, { quantity: newQuantity });
+        }
         console.log('✅ Purchase added');
         break;
       }
@@ -788,16 +816,21 @@ async function manageTransactions(db: Database) {
       switch (returnAction) {
       case 'Add a Return': {
         const newReturn = await inquirer.prompt([
-        { type: 'input', name: 'goodId', message: 'Good ID:' },
-        { type: 'input', name: 'merchantId', message: 'Merchant ID:' },
-        { type: 'number', name: 'quantity', message: 'Quantity:' },
-        { type: 'number', name: 'price', message: 'Price per unit:' }
+          { type: 'input', name: 'goodId', message: 'Good ID:' },
+          { type: 'input', name: 'merchantId', message: 'Merchant ID:' },
+          { type: 'number', name: 'quantity', message: 'Quantity:' },
+          { type: 'number', name: 'price', message: 'Price per unit:' }
         ]);
 
         const good = db.getGoodByID(Number(newReturn.goodId));
         if (!good) {
-        console.log("⚠️ Good not found.");
-        break;
+          console.log("⚠️ Good not found.");
+          break;
+        }
+        const merchant = db.getMerchantByID(Number(newReturn.merchantId));
+        if (!merchant) {
+          console.log("⚠️ Merchant not found.");
+          break;
         }
 
         const returnTransaction = new Return(
@@ -808,6 +841,14 @@ async function manageTransactions(db: Database) {
         );
 
         await db.addReturn(returnTransaction);
+
+        const newQuantity = good.quantity - newReturn.quantity;
+        if (newQuantity <= 0) {
+          await db.deleteGood(good.id);
+          console.log(`❌ ${good.name} were out of stock and was eliminated from the inventory.`);
+        } else {
+          await db.updateGood(good.id, { quantity: newQuantity });
+        }
         console.log('✅ Return added');
         break;
       }

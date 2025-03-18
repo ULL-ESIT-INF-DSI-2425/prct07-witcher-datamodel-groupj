@@ -16,7 +16,7 @@
       "material": "Mutágenos de nekkers y hierbas alquímicas",
       "weight": 0.3,
       "value": 500,
-      "quantity": 12
+      "quantity": 11
     },
     {
       "id": 3,
@@ -341,6 +341,23 @@
         }
       ],
       "totalAmount": 2800
+    },
+    {
+      "id": 2,
+      "date": "3/12/1242",
+      "merchantId": 2,
+      "itemsPurchased": [
+        {
+          "id": 2,
+          "name": "Elixir de Golondrina",
+          "description": "Regenera vitalidad de manera acelerada.",
+          "material": "Mutágenos de nekkers y hierbas alquímicas",
+          "weight": 0.3,
+          "value": 500,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 1000
     }
   ],
   "returns": [
