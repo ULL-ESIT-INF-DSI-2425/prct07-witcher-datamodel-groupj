@@ -910,7 +910,7 @@ async function manageReports(db: Database) {
       type: 'list',
       name: 'reportAction',
       message: 'Select a report:',
-      choices: ['Best-selling item', 'Most in-demand item', 'Back']
+      choices: ['Best-selling item', 'Most in-demand item', 'Client transaction history', 'Back']
     }
   ]);
 
@@ -974,6 +974,65 @@ async function manageReports(db: Database) {
       }
       break;
     }
+
+    case 'Client transaction history': {
+      const { clientId } = await inquirer.prompt([
+        { type: 'number', name: 'clientId', message: 'Enter client ID:' }
+      ]);
+
+      const merchant = db.getMerchantByID(clientId);
+      const hunter = db.getHunterByID(clientId);
+
+      if (!merchant && !hunter) {
+        console.log("⚠️ Client not found.");
+        break;
+      }
+
+      let transactions: any[] = [];
+
+      if (merchant) {
+        const clientPurchases = db.getAllPurchases()
+          .filter(purchase => purchase.merchantId === clientId)
+          .map(purchase => ({
+            Type: 'Purchase',
+            ID: purchase.id,
+            Date: purchase.date,
+            TotalAmount: purchase.totalAmount,
+            Items: purchase.itemsPurchased.map(item => item.name).join(", ")
+          }));
+        const clientReturns = db.getAllReturns()
+          .filter(ret => ret.customerId === clientId)
+          .map(ret => ({
+            Type: 'Return',
+            ID: ret.id,
+            Date: ret.date,
+            TotalAmount: "-",
+            Items: ret.itemsReturned.map(item => item.name).join(", ")
+          }));
+        transactions = transactions.concat(clientPurchases, clientReturns);
+      }
+
+      if (hunter) {
+        const clientSales = db.getAllSales()
+          .filter(sale => sale.hunterId === clientId)
+          .map(sale => ({
+            Type: 'Sale',
+            ID: sale.id,
+            Date: sale.date,
+            TotalAmount: sale.totalAmount,
+            Items: sale.itemsSold.map(item => item.name).join(", ")
+          }));
+        transactions = transactions.concat(clientSales);
+      }
+
+      if (transactions.length === 0) {
+        console.log("⚠️ No transactions found for this client.");
+      } else {
+        console.table(transactions);
+      }
+      break;
+    }
+
     case 'Back':
       return;
   }
