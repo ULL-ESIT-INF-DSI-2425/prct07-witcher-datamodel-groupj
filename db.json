@@ -19,22 +19,13 @@
       "quantity": 5
     },
     {
-      "id": 3,
-      "name": "Armadura de Placas Mahakamera",
-      "description": "Fabricada por enanos, ofrece una defensa excepcional.",
-      "material": "Acero de Mahakam",
-      "weight": 25,
-      "value": 3200,
-      "quantity": 3
-    },
-    {
       "id": 4,
       "name": "Bestiario de Oxenfurt",
       "description": "Contiene información detallada sobre las criaturas del continente.",
       "material": "Pergamino y tintas raras",
       "weight": 1.2,
       "value": 250,
-      "quantity": 5
+      "quantity": 2
     },
     {
       "id": 5,
@@ -43,7 +34,7 @@
       "material": "Hierbas de marisma y esencia de espectro",
       "weight": 0.2,
       "value": 350,
-      "quantity": 8
+      "quantity": 11
     },
     {
       "id": 6,
@@ -327,7 +318,24 @@
   "purchases": [
     {
       "id": 1,
-      "date": "14/04/1925",
+      "date": "23",
+      "merchantId": 7,
+      "itemsPurchased": [
+        {
+          "id": 4,
+          "name": "Bestiario de Oxenfurt",
+          "description": "Contiene información detallada sobre las criaturas del continente.",
+          "material": "Pergamino y tintas raras",
+          "weight": 1.2,
+          "value": 250,
+          "quantity": 3
+        }
+      ],
+      "totalAmount": 750
+    },
+    {
+      "id": 2,
+      "date": "4",
       "merchantId": 3,
       "itemsPurchased": [
         {
@@ -337,77 +345,26 @@
           "material": "Hierbas de marisma y esencia de espectro",
           "weight": 0.2,
           "value": 350,
-          "quantity": 8
-        }
-      ],
-      "totalAmount": 2800
-    },
-    {
-      "id": 2,
-      "date": "3/12/1242",
-      "merchantId": 2,
-      "itemsPurchased": [
-        {
-          "id": 2,
-          "name": "Elixir de Golondrina",
-          "description": "Regenera vitalidad de manera acelerada.",
-          "material": "Mutágenos de nekkers y hierbas alquímicas",
-          "weight": 0.3,
-          "value": 500,
           "quantity": 2
         }
       ],
-      "totalAmount": 1000
-    },
-    {
-      "id": 3,
-      "date": "15/3/433",
-      "merchantId": 3,
-      "itemsPurchased": [
-        {
-          "id": 2,
-          "name": "Elixir de Golondrina",
-          "description": "Regenera vitalidad de manera acelerada.",
-          "material": "Mutágenos de nekkers y hierbas alquímicas",
-          "weight": 0.3,
-          "value": 200,
-          "quantity": 2
-        }
-      ],
-      "totalAmount": 400
-    },
-    {
-      "id": 4,
-      "date": "2222",
-      "merchantId": 3,
-      "itemsPurchased": [
-        {
-          "id": 2,
-          "name": "Elixir de Golondrina",
-          "description": "Regenera vitalidad de manera acelerada.",
-          "material": "Mutágenos de nekkers y hierbas alquímicas",
-          "weight": 0.3,
-          "value": 200,
-          "quantity": 2
-        }
-      ],
-      "totalAmount": 400
+      "totalAmount": 700
     }
   ],
   "returns": [
     {
       "id": 1,
-      "date": "24/10/2003",
-      "customerId": 2,
+      "date": "3245",
+      "customerId": 9,
       "itemsReturned": [
         {
-          "id": 7,
-          "name": "Dagas Envenenadas de Skellige",
-          "description": "Cubiertas con toxinas extraídas de sirenas del archipiélago.",
-          "material": "Acero templado con veneno",
-          "weight": 1,
-          "value": 700,
-          "quantity": 2
+          "id": 5,
+          "name": "Poción de Gato",
+          "description": "Permite visión nocturna temporalmente.",
+          "material": "Hierbas de marisma y esencia de espectro",
+          "weight": 0.2,
+          "value": 350,
+          "quantity": 5
         }
       ]
     }

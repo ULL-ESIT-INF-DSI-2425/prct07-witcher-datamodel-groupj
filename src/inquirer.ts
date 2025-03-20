@@ -721,16 +721,15 @@ async function manageTransactions(db: Database) {
         type: 'list',
         name: 'purchaseAction',
         message: 'Select an action for Purchases',
-        choices: ['Add a Purchase', 'Delete a Purchase', 'List Purchases', 'Back'],
+        choices: ['Add a Purchase', 'List Purchases', 'Back'],
       },
       ]);
 
       switch (purchaseAction) {
       case 'Add a Purchase': {
         const newPurchase = await inquirer.prompt([
-          { type: 'input', name: 'merchantId', message: 'Merchant ID:' },
+          { type: 'input', name: 'merchantId', message: 'Merchant ID providing the goods:' },
           { type: 'number', name: 'quantity', message: 'Quantity:' },
-          { type: 'number', name: 'price', message: 'Price per unit:' },
           { type: 'input', name: 'date', message: 'Date: ' },
           { type: 'number', name: 'goodId', message: 'Good ID:' }
         ]);
@@ -746,47 +745,47 @@ async function manageTransactions(db: Database) {
           break;
         }
 
+        if (newPurchase.quantity <= 0) {
+          console.log("Quantity must be greater than zero.");
+          break;
+        }
+
+        if (newPurchase.quantity > good.quantity) {
+          console.log("Not enough stock!");
+          break;
+        }
+
+        // Mostrar precio por unidad basado en el inventario
+        console.log(`💰 The market price per unit is ${good.value} crowns.`);
+        const totalPrice = good.value * newPurchase.quantity;
+
+        // Confirmar la compra
+        const { confirmPurchase } = await inquirer.prompt([
+          {
+            type: 'confirm',
+            name: 'confirmPurchase',
+            message: `Confirm purchase of ${newPurchase.quantity}x ${good.name} from ${db.getMerchantByID(newPurchase.merchantId)?.name} for a total of ${totalPrice} crowns?`,
+          },
+        ]);
+      
+        if (!confirmPurchase) {
+          console.log("❌ Purchase cancelled.");
+          break;
+        }
 
         const purchase = new Purchase(
-        db.getAllPurchases().length + 1, // Generate a unique ID
-        newPurchase.date,
-        Number(newPurchase.merchantId),
-        [new Good(good.id, good.name, good.description, good.material, good.weight, newPurchase.price, newPurchase.quantity)],
-        newPurchase.price * newPurchase.quantity
+          db.getAllPurchases().length + 1, // Generate a unique ID
+          newPurchase.date,
+          Number(newPurchase.merchantId),
+          [new Good(good.id, good.name, good.description, good.material, good.weight, good.value, newPurchase.quantity)],
+          totalPrice
         );
 
         await db.addPurchase(purchase);
 
         const newQuantity = good.quantity - newPurchase.quantity;
-        if (newQuantity <= 0) {
-          await db.deleteGood(good.id);
-          console.log(`❌ ${good.name} were out of stock and was eliminated from the inventory.`);
-        } else {
-          await db.updateGood(good.id, { quantity: newQuantity });
-        }
+        await db.updateGood(good.id, { quantity: newQuantity });
         console.log('✅ Purchase added');
-        break;
-      }
-      case 'Delete a Purchase': {
-        const purchasesList = db.getAllPurchases();
-        if (purchasesList.length === 0) {
-        console.log("⚠️ No purchases available to delete.");
-        break;
-        }
-
-        const { purchaseToDelete } = await inquirer.prompt([
-        {
-          type: 'list',
-          name: 'purchaseToDelete',
-          message: 'Select the Purchase to delete:',
-          choices: [...purchasesList.map(purchase => ({ name: `Purchase ID: ${purchase.id}`, value: purchase.id })), 
-          { name: "🔙 Back", value: "back" }],
-        },
-        ]);
-
-        if (purchaseToDelete === "back") break;
-        await db.deletePurchase(purchaseToDelete);
-        console.log("❌ Purchase removed.");
         break;
       }
       case 'List Purchases': {
@@ -822,77 +821,122 @@ async function manageTransactions(db: Database) {
       ]);
 
       switch (returnAction) {
-      case 'Add a Return': {
-        const newReturn = await inquirer.prompt([
-          { type: 'input', name: 'goodId', message: 'Good ID:' },
-          { type: 'input', name: 'merchantId', message: 'Merchant ID:' },
-          { type: 'number', name: 'quantity', message: 'Quantity:' },
-          { type: 'number', name: 'price', message: 'Price per unit:' }
-        ]);
-
-        const good = db.getGoodByID(Number(newReturn.goodId));
-        if (!good) {
-          console.log("⚠️ Good not found.");
-          break;
-        }
-        const merchant = db.getMerchantByID(Number(newReturn.merchantId));
-        if (!merchant) {
-          console.log("⚠️ Merchant not found.");
-          break;
-        }
-
-        const returnTransaction = new Return(
-        db.getAllReturns().length + 1, // Generate a unique ID
-        new Date(),
-        Number(newReturn.merchantId),
-        [new Good(good.id, good.name, good.description, good.material, good.weight, newReturn.price, newReturn.quantity)]
-        );
-
-        await db.addReturn(returnTransaction);
-
-        const newQuantity = good.quantity - newReturn.quantity;
-        if (newQuantity <= 0) {
-          await db.deleteGood(good.id);
-          console.log(`❌ ${good.name} were out of stock and was eliminated from the inventory.`);
-        } else {
+        case 'Add a Return': {
+          // Seleccionar el mercader que recibe la devolución
+          const merchantsList = db.getAllMerchants();
+          if (merchantsList.length === 0) {
+            console.log("⚠️ No merchants found.");
+            break;
+          }
+        
+          const { merchantId } = await inquirer.prompt([
+            {
+              type: 'list',
+              name: 'merchantId',
+              message: 'Select the merchant receiving the return:',
+              choices: merchantsList.map(merchant => ({
+                name: `${merchant.name} (Type: ${merchant.type}, Location: ${merchant.location})`,
+                value: merchant.id
+              })),
+            },
+          ]);
+        
+          // Seleccionar el bien a devolver
+          const goodsList = db.getAllGoods();
+          if (goodsList.length === 0) {
+            console.log("⚠️ No goods available for return.");
+            break;
+          }
+        
+          const { goodId } = await inquirer.prompt([
+            {
+              type: 'list',
+              name: 'goodId',
+              message: 'Select the good to return:',
+              choices: goodsList.map(good => ({
+                name: `${good.name} (Stock: ${good.quantity}, Price: ${good.value} crowns)`,
+                value: good.id
+              })),
+            },
+          ]);
+        
+          // Obtener el bien seleccionado
+          const good = db.getGoodByID(Number(goodId));
+          if (!good) {
+            console.log("⚠️ Good not found.");
+            break;
+          }
+        
+          // Pedir la cantidad a devolver
+          const { quantity } = await inquirer.prompt([
+            {
+              type: 'number',
+              name: 'quantity',
+              message: 'Enter quantity to return:',
+              validate: (input) => {
+                if (!input || isNaN(input) || input <= 0) return "Quantity must be a valid number greater than zero.";
+                return true;
+              },
+            },
+          ]);
+          
+        
+          // Mostrar el precio por unidad basado en el inventario
+          console.log(`💰 The market price per unit is ${good.value} crowns.`);
+          const totalRefund = good.value * quantity;
+        
+          // Pedir la fecha manualmente
+          const { date } = await inquirer.prompt([
+            {
+              type: 'input',
+              name: 'date',
+              message: 'Enter the return date (YYYY-MM-DD):',
+            },
+          ]);
+        
+          // Confirmación de la devolución
+          const { confirmReturn } = await inquirer.prompt([
+            {
+              type: 'confirm',
+              name: 'confirmReturn',
+              message: `Confirm return of ${quantity}x ${good.name} to ${db.getMerchantByID(merchantId)?.name} on ${date} for a total refund of ${totalRefund} crowns?`,
+            },
+          ]);
+        
+          if (!confirmReturn) {
+            console.log("❌ Return cancelled.");
+            break;
+          }
+        
+          // Registrar la devolución
+          const returnTransaction = new Return(
+            db.getAllReturns().length + 1, // ID único
+            date, // Fecha ingresada por el usuario
+            Number(merchantId),
+            [new Good(good.id, good.name, good.description, good.material, good.weight, good.value, quantity)]
+          );
+        
+          await db.addReturn(returnTransaction);
+        
+          // Actualizar el stock sumando la cantidad devuelta
+          const newQuantity = good.quantity + quantity;
           await db.updateGood(good.id, { quantity: newQuantity });
+        
+          console.log(`✅ Return registered: ${quantity}x ${good.name} returned to ${db.getMerchantByID(merchantId)?.name} on ${date}.`);
+          break;
         }
-        console.log('✅ Return added');
-        break;
-      }
-      case 'Delete a Return': {
-        const returnsList = db.getAllReturns();
-        if (returnsList.length === 0) {
-        console.log("⚠️ No returns available to delete.");
-        break;
-        }
-
-        const { returnToDelete } = await inquirer.prompt([
-        {
-          type: 'list',
-          name: 'returnToDelete',
-          message: 'Select the Return to delete:',
-          choices: [...returnsList.map(returnTransaction => ({ name: `Return ID: ${returnTransaction.id}`, value: returnTransaction.id })), 
-          { name: "🔙 Back", value: "back" }],
-        },
-        ]);
-
-        if (returnToDelete === "back") break;
-        await db.deleteReturn(returnToDelete);
-        console.log("❌ Return removed.");
-        break;
-      }
       case 'List Returns': {
         const returns = db.getAllReturns();
         if (returns.length === 0) {
-          console.log("No returns found.");
+          console.log("⚠️ No returns found.");
         } else {
           const formattedReturns = returns.map(returnn => ({
             ID: returnn.id,
             Date: returnn.date,
-            CustomerID: returnn.customerId,
-            ItemsReturned: returnn.itemsReturned.map(item => item.name).join(", ")
+            Returner: db.getHunterByID(returnn.customerId)?.name || db.getMerchantByID(returnn.customerId)?.name || "Unknown",
+            ItemsReturned: returnn.itemsReturned.map(item => `${item.quantity}x ${item.name}`).join(", "),
           }));
+          console.table(formattedReturns);
         }
         break;
       }
