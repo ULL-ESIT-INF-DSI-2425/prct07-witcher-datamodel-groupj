@@ -879,7 +879,7 @@ async function manageTransactions(db: Database) {
               },
             },
           ]);
-          
+                
         
           // Mostrar el precio por unidad basado en el inventario
           console.log(`💰 The market price per unit is ${good.value} crowns.`);

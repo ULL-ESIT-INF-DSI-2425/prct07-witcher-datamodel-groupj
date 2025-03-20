@@ -1,9 +1,6 @@
-//TODO Inventory part
-//TODO Dialogues : bomba no se q era esto 
-//TODO Exceptions : mas o menos controladas en el main, te sale el tipo de error
+//TODO Exceptions y sus tests
 //TODO Documentation
-//TODO Test : preguntar al profe
-//TODO To search info abt base class for good/hunter/merchant
+//TODO SOLID: el inquirer son 1000 lineas xd
 
 import { mainMenu } from "./inquirer.js"
 import { Database } from "./database.js";
