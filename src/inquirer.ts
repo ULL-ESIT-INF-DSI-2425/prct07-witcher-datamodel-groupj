@@ -41,7 +41,7 @@ export async function mainMenu(db: Database) {
   await mainMenu(db);
 }
 
-async function manageGoods(db: Database) {
+export async function manageGoods(db: Database) {
   const { action } = await inquirer.prompt([
     {
       type: 'list',
@@ -137,7 +137,7 @@ async function manageGoods(db: Database) {
   await manageGoods(db);
 }
 
-async function manageMerchants(db: Database) {
+export async function manageMerchants(db: Database) {
   const { action } = await inquirer.prompt([
     {
       type: 'list',
@@ -213,7 +213,7 @@ async function manageMerchants(db: Database) {
   await manageMerchants(db);
 }
 
-async function manageHunters(db: Database) {
+export async function manageHunters(db: Database) {
   const { action } = await inquirer.prompt([
     {
       type: 'list',
@@ -604,7 +604,7 @@ async function updateHunter(db: Database) {
   console.log("✅ Hunter updated successfully!");
 }
 
-async function manageTransactions(db: Database) {
+export async function manageTransactions(db: Database) {
   const { action } = await inquirer.prompt([
     {
       type: 'list',
