@@ -1,6 +1,15 @@
 //TODO Exceptions y sus tests
 //TODO Documentation
 //TODO SOLID: el inquirer son 1000 lineas xd
+/**
+ * Separar el DATABASE en varios database (por ejemplo, uno UpdateDatabase, AddDatabase, GetDatabase, etc)
+ * Lo bomba seria meterlo en la misma carpeta, lo mismo con good, hunter y merchant tmb en una misma carpeta
+ * separar transaction tmb en una carpeta que tenga las 3 bases de datos separadas
+ * y el inquire lo mismo, solo separar y ya
+ * 
+ * cuando vayan separando, rueden los tests al nuevo .spec.ts para que no se lien
+ * y ya estaria lo solid 
+ */
 
 import { mainMenu } from "./inquirer.js"
 import { Database } from "./database.js";
