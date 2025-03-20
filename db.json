@@ -16,7 +16,7 @@
       "material": "Mutágenos de nekkers y hierbas alquímicas",
       "weight": 0.3,
       "value": 500,
-      "quantity": 11
+      "quantity": 5
     },
     {
       "id": 3,
@@ -308,8 +308,8 @@
   "sales": [
     {
       "id": 1,
-      "date": "02/12/1954",
-      "hunterId": 1,
+      "date": "234",
+      "hunterId": 3,
       "itemsSold": [
         {
           "id": 2,
@@ -318,27 +318,10 @@
           "material": "Mutágenos de nekkers y hierbas alquímicas",
           "weight": 0.3,
           "value": 500,
-          "quantity": 12
+          "quantity": 2
         }
       ],
-      "totalAmount": 500
-    },
-    {
-      "id": 2,
-      "date": "24/12/2015",
-      "hunterId": 3,
-      "itemsSold": [
-        {
-          "id": 6,
-          "name": "Ballesta de Loberos",
-          "description": "Usada por la guardia de Novigrado para cazar bestias y criminales.",
-          "material": "Madera reforzada y cuerda de tendón de basilisco",
-          "weight": 4,
-          "value": 12,
-          "quantity": 4
-        }
-      ],
-      "totalAmount": 48
+      "totalAmount": 1000
     }
   ],
   "purchases": [
@@ -375,6 +358,40 @@
         }
       ],
       "totalAmount": 1000
+    },
+    {
+      "id": 3,
+      "date": "15/3/433",
+      "merchantId": 3,
+      "itemsPurchased": [
+        {
+          "id": 2,
+          "name": "Elixir de Golondrina",
+          "description": "Regenera vitalidad de manera acelerada.",
+          "material": "Mutágenos de nekkers y hierbas alquímicas",
+          "weight": 0.3,
+          "value": 200,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 400
+    },
+    {
+      "id": 4,
+      "date": "2222",
+      "merchantId": 3,
+      "itemsPurchased": [
+        {
+          "id": 2,
+          "name": "Elixir de Golondrina",
+          "description": "Regenera vitalidad de manera acelerada.",
+          "material": "Mutágenos de nekkers y hierbas alquímicas",
+          "weight": 0.3,
+          "value": 200,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 400
     }
   ],
   "returns": [

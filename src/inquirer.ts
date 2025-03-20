@@ -621,16 +621,15 @@ async function manageTransactions(db: Database) {
         type: 'list',
         name: 'sellAction',
         message: 'Select an action for Sells',
-        choices: ['Add a Sale', 'Delete a Sale', 'List Sales', 'Back'],
+        choices: ['Sell Item', 'List Sales', 'Back'],
       },
       ]);
 
       switch (sellAction) {
-      case 'Add a Sale': {
+      case 'Sell Item': {
         const newSale = await inquirer.prompt([
-        { type: 'number', name: 'hunterId', message: 'Hunter ID:' },
+        { type: 'number', name: 'hunterId', message: 'Hunter ID making purchase:' },
         { type: 'number', name: 'quantity', message: 'Quantity:' },
-        { type: 'number', name: 'price', message: 'Price per unit:' },
         { type: 'number', name: 'goodId', message: 'Good ID:' },
         { type: 'input', name: 'date', message: 'Date: ' }
         ]);
@@ -646,12 +645,38 @@ async function manageTransactions(db: Database) {
           break;
         }
 
+        if (newSale.quantity <= 0) {
+          console.log("Quantity must be greater than zero.");
+          break;
+        }
+
+        if (newSale.quantity > good.quantity) {
+          console.log("Not enough stock!");
+          break;
+        }
+
+        console.log(`💰 The price per unit is ${good.value} crowns.`);
+        const totalPrice = good.value * newSale.quantity;
+  
+        const { confirmSale } = await inquirer.prompt([
+          {
+            type: 'confirm',
+            name: 'confirmSale',
+            message: `Confirm sale of ${newSale.quantity}x ${good.name} for a total of ${totalPrice} crowns?`,
+          },
+        ]);
+  
+        if (!confirmSale) {
+          console.log("❌ Sale cancelled.");
+          break;
+        }
+
         const sale = new Sale(
-        db.getAllSales().length + 1, // Generate a unique ID
-        newSale.date,
-        Number(newSale.hunterId),
-        [new Good(good.id, good.name, good.description, good.material, good.weight, newSale.price, newSale.quantity)],
-        newSale.price * newSale.quantity
+          db.getAllSales().length + 1, // Generate a unique ID
+          newSale.date,
+          Number(newSale.hunterId),
+          [new Good(good.id, good.name, good.description, good.material, good.weight, good.value, newSale.quantity)],
+          totalPrice
         );
 
         await db.addSale(sale);
@@ -667,28 +692,7 @@ async function manageTransactions(db: Database) {
         console.log('✅ Sale added');
         break;
       }
-      case 'Delete a Sale': {
-        const salesList = db.getAllSales();
-        if (salesList.length === 0) {
-        console.log("⚠️ No sales available to delete.");
-        break;
-        }
-
-        const { saleToDelete } = await inquirer.prompt([
-        {
-          type: 'list',
-          name: 'saleToDelete',
-          message: 'Select the Sale to delete:',
-          choices: [...salesList.map(sale => ({ name: `Sale ID: ${sale.id}`, value: sale.id })), 
-          { name: "🔙 Back", value: "back" }],
-        },
-        ]);
-
-        if (saleToDelete === "back") break;
-        await db.deleteSale(saleToDelete);
-        console.log("❌ Sale removed.");
-        break;
-      }
+      
       case 'List Sales': {
         const sales = db.getAllSales();
         if (sales.length === 0) {
@@ -699,6 +703,7 @@ async function manageTransactions(db: Database) {
                 Date: sale.date,
                 HunterID: sale.hunterId,
                 ItemsSold: sale.itemsSold.map(item => item.name).join(", "),
+                Total: sale.totalAmount + " crowns"
             }));
             console.table(formattedSales);
         }
@@ -1036,6 +1041,5 @@ async function manageReports(db: Database) {
     case 'Back':
       return;
   }
-
   await manageReports(db);
 }

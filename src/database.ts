@@ -39,8 +39,12 @@ export class Database { //TODO to document
     getAllGoods(): Good[] {
         return this.db.data.goods;
     }
-    getAllMerchants(): Merchant[] { return this.db.data.merchants; }
-    getAllHunters(): Hunter[] { return this.db.data.hunters; }
+    getAllMerchants(): Merchant[] { 
+        return this.db.data.merchants; 
+    }
+    getAllHunters(): Hunter[] { 
+        return this.db.data.hunters; 
+    }
 
     getGoodByID(id: number): Good | undefined {
         return this.db.data.goods.find(good => good.id === id);
