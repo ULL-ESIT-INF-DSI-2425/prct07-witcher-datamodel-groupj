@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Good } from "../src/good.js";
+import { Good } from "../../src/characters/good.js";
 
 describe("Good class", () => {
   test("should create a Good object correctly", () => {

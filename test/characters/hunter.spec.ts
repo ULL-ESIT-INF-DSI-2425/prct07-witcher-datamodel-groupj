@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Hunter } from "../src/hunter.js"; // Ajusta la ruta según tu estructura de archivos
+import { Hunter } from "../../src/characters/hunter.js"; // Ajusta la ruta según tu estructura de archivos
 
 describe("Hunter class", () => {
   test("should create a Hunter object correctly", () => {

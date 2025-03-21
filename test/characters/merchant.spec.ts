@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Merchant } from "../src/merchant.js"; // Ajusta la ruta según tu estructura de archivos
+import { Merchant } from "../../src/characters/merchant.js"; // Ajusta la ruta según tu estructura de archivos
 
 describe("Merchant class", () => {
   test("should create a Merchant object correctly", () => {
