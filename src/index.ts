@@ -9,8 +9,8 @@
  * y ya estaria lo solid 
  */
 
-import { mainMenu } from "./inquirer.js"
-import { Database } from "./database.js";
+import { mainMenu } from "./inquirer/inquirer.js"
+import { Database } from "./database/database.js";
 
 async function main() {
   try {

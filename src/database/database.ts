@@ -1,8 +1,10 @@
 import { JSONFilePreset } from "lowdb/node";
-import { Good } from "./good.js";
-import { Merchant } from "./merchant.js";
-import { Hunter } from "./hunter.js";
-import { Sale, Purchase, Return } from "./transaction.js"
+import { Good } from "../characters/good.js";
+import { Merchant } from "../characters/merchant.js";
+import { Hunter } from "../characters/hunter.js";
+import { Sale } from "../transactions/sale.js"
+import { Purchase } from "../transactions/purchase.js";
+import { Return } from "../transactions/return.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -28,9 +30,9 @@ export class Database { //TODO to document
     }
 
     constructor() {}
-
+    
     async init() {
-        const dbPath = path.resolve(__dirname, "../db.json");
+        const dbPath = path.resolve(__dirname, "../../db.json");
         this.db = await JSONFilePreset<DBSchema>(dbPath, defaultData);
         await this.db.read();
         console.log("📦 Posada del Lobo Blanco.");
@@ -39,9 +41,11 @@ export class Database { //TODO to document
     getAllGoods(): Good[] {
         return this.db.data.goods;
     }
+
     getAllMerchants(): Merchant[] { 
         return this.db.data.merchants; 
     }
+
     getAllHunters(): Hunter[] { 
         return this.db.data.hunters; 
     }
@@ -49,9 +53,11 @@ export class Database { //TODO to document
     getGoodByID(id: number): Good | undefined {
         return this.db.data.goods.find(good => good.id === id);
     }
+
     getMerchantByID(id: number): Merchant | undefined {
         return this.db.data.merchants.find(merchant => merchant.id === id);
     }
+
     getHunterByID(id: number): Hunter | undefined {
         return this.db.data.hunters.find(hunter => hunter.id === id);
     }
@@ -59,9 +65,11 @@ export class Database { //TODO to document
     getGoodByName(name: string): Good | undefined {
         return this.db.data.goods.find(good => good.name === name);
     }
+
     getMerchantByName(name: string): Merchant | undefined {
         return this.db.data.merchants.find(merchant => merchant.name === name);
     }
+
     getHunterByName(name: string): Hunter | undefined {
         return this.db.data.hunters.find(hunter => hunter.name === name);
     }
@@ -81,6 +89,7 @@ export class Database { //TODO to document
     getMerchantByLocation(location: string): Merchant | undefined {
         return this.db.data.merchants.find(merchant => merchant.location === location);
     }
+
     getHunterByLocation(location: string): Hunter | undefined {
         return this.db.data.hunters.find(hunter => hunter.location === location);
     }
@@ -89,10 +98,12 @@ export class Database { //TODO to document
         this.db.data.goods.push(good);
         this.save();
     }
+
     addMerchant(merchant: Merchant): void {
         this.db.data.merchants.push(merchant);
         this.save();
     }
+
     addHunter(hunter: Hunter): void {
         this.db.data.hunters.push(hunter);
         this.save();
@@ -105,6 +116,7 @@ export class Database { //TODO to document
             this.save();
         }
     }
+
     updateMerchant(id: number, updates: Partial<Merchant>): void {
         const merchant = this.getMerchantByID(id);
         if (merchant) {
@@ -112,6 +124,7 @@ export class Database { //TODO to document
             this.save();
         }
     }
+
     updateHunter(id: number, updates: Partial<Hunter>): void {
         const hunter = this.getHunterByID(id);
         if (hunter) {
