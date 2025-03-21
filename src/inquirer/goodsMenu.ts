@@ -202,6 +202,6 @@ async function updateGood(db: Database) {
       break;
   }
 
-  await db.updateGood(goodToUpdate, updateData);
+  db.updateGood(goodToUpdate, updateData);
   console.log("✅ Good updated successfully!");
 }
