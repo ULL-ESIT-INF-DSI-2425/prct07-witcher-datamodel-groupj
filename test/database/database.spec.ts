@@ -1,11 +1,11 @@
 import { describe, expect, test, beforeEach, vi } from "vitest";
-import { Good } from "../src/characters/good.js";
-import { Merchant } from "../src/characters/merchant.js";
-import { Hunter } from "../src/characters/hunter.js";
-import { Sale } from "../src/transactions/sale.js"
-import { Purchase } from "../src/transactions/purchase.js";
-import { Return } from "../src/transactions/return.js";
-import { Database } from "../src/database/database.js";
+import { Good } from "../../src/characters/good.js";
+import { Merchant } from "../../src/characters/merchant.js";
+import { Hunter } from "../../src/characters/hunter.js";
+import { Sale } from "../../src/transactions/sale.js"
+import { Purchase } from "../../src/transactions/purchase.js";
+import { Return } from "../../src/transactions/return.js";
+import { Database } from "../../src/database/database.js";
 
 describe("Database class", () => {
   let db: Database;
