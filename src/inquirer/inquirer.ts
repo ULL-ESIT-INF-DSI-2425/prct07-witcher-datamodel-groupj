@@ -8,33 +8,45 @@ import { manageReports } from "./reportsMenu.js";
 
 const db = new Database();
 
-export async function mainMenu(db: Database) {
+/**
+ * Muestra el menú principal de la aplicación y permite al usuario navegar entre las diferentes opciones.
+ * @param db - Instancia de la base de datos.
+ * @returns Una promesa que se resuelve cuando el usuario selecciona "Exit".
+ */
+export async function mainMenu(db: Database): Promise<void> {
   const { action } = await inquirer.prompt([
     {
-      type: 'list',
-      name: 'action',
-      message: '🐺 The White Wolf Inn 🐺',
-      choices: ['Manage Goods', 'Manage Merchants', 'Manage Hunters', 'Manage Transactions', 'Reports', 'Exit'],
+      type: "list",
+      name: "action",
+      message: "🐺 The White Wolf Inn 🐺",
+      choices: [
+        "Manage Goods",
+        "Manage Merchants",
+        "Manage Hunters",
+        "Manage Transactions",
+        "Reports",
+        "Exit",
+      ],
     },
   ]);
 
   switch (action) {
-    case 'Manage Goods':
+    case "Manage Goods":
       await manageGoods(db);
       break;
-    case 'Manage Merchants':
+    case "Manage Merchants":
       await manageMerchants(db);
       break;
-    case 'Manage Hunters':
+    case "Manage Hunters":
       await manageHunters(db);
       break;
-    case 'Manage Transactions':
+    case "Manage Transactions":
       await manageTransactions(db);
       break;
-    case 'Reports':
+    case "Reports":
       await manageReports(db);
       break;
-    case 'Exit':
+    case "Exit":
       console.log("🌿 Farewell, traveler 🌿");
       return;
   }

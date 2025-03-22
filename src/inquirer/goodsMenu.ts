@@ -1,29 +1,40 @@
 import inquirer from "inquirer";
 import { Database } from "../database/database.js";
 import { Good } from "../characters/good.js";
-import { error } from "console";
 import { isNumber } from "lodash";
 
-export async function manageGoods(db: Database) {
+/**
+ * Administra las operaciones relacionadas con los bienes (Goods).
+ * @param db - Instancia de la base de datos.
+ */
+export async function manageGoods(db: Database): Promise<void> {
   const { action } = await inquirer.prompt([
     {
-      type: 'list',
-      name: 'action',
-      message: 'Select an action for Goods',
-      choices: ['Add a Good', 'List Goods', 'Delete a Good', 'Search Goods', 'Update Good', 'Stock', 'Back'],
+      type: "list",
+      name: "action",
+      message: "Select an action for Goods",
+      choices: [
+        "Add a Good",
+        "List Goods",
+        "Delete a Good",
+        "Search Goods",
+        "Update Good",
+        "Stock",
+        "Back",
+      ],
     },
   ]);
 
   switch (action) {
-    case 'Add a Good': {
+    case "Add a Good": {
       try {
         const newGood = await inquirer.prompt([
-          { type: 'input', name: 'name', message: 'Good\'s name:' },
-          { type: 'input', name: 'description', message: 'Description:' },
-          { type: 'input', name: 'material', message: 'Material:' },
-          { type: 'number', name: 'weight', message: 'Weight:' },
-          { type: 'number', name: 'value', message: 'Value in crowns:' },
-          { type: 'number', name: 'quantity', message: 'Good quantity: ' }
+          { type: "input", name: "name", message: "Good's name:" },
+          { type: "input", name: "description", message: "Description:" },
+          { type: "input", name: "material", message: "Material:" },
+          { type: "number", name: "weight", message: "Weight:" },
+          { type: "number", name: "value", message: "Value in crowns:" },
+          { type: "number", name: "quantity", message: "Good quantity: " },
         ]);
 
         if (isNaN(newGood.weight) || isNaN(newGood.value) || isNaN(newGood.quantity)) {
@@ -37,11 +48,11 @@ export async function manageGoods(db: Database) {
           newGood.material,
           newGood.weight,
           newGood.value,
-          newGood.quantity
+          newGood.quantity,
         );
 
         db.addGood(good);
-        console.log('✅ Good added');
+        console.log("✅ Good added");
       } catch (error) {
         if (error instanceof Error) {
           console.error("❌ Error adding goods:", error.message);
@@ -52,7 +63,7 @@ export async function manageGoods(db: Database) {
       break;
     }
 
-    case 'List Goods':
+    case "List Goods":
       if (db.getAllGoods().length === 0) {
         console.log("⚠️ No goods found.");
       } else {
@@ -60,7 +71,7 @@ export async function manageGoods(db: Database) {
       }
       break;
 
-    case 'Delete a Good': {
+    case "Delete a Good": {
       const goodsList = db.getAllGoods();
       if (goodsList.length === 0) {
         console.log("⚠️ No goods available to delete.");
@@ -69,11 +80,13 @@ export async function manageGoods(db: Database) {
 
       const { goodToDelete } = await inquirer.prompt([
         {
-          type: 'list',
-          name: 'goodToDelete',
-          message: 'Select the Good to delete:',
-          choices: [...goodsList.map(good => ({ name: `${good.name} (ID: ${good.id})`, value: good.id })), 
-            { name: "🔙 Back", value: "back" }],
+          type: "list",
+          name: "goodToDelete",
+          message: "Select the Good to delete:",
+          choices: [
+            ...goodsList.map((good) => ({ name: `${good.name} (ID: ${good.id})`, value: good.id })),
+            { name: "🔙 Back", value: "back" },
+          ],
         },
       ]);
 
@@ -87,13 +100,13 @@ export async function manageGoods(db: Database) {
       break;
     }
 
-    case 'Stock': {
+    case "Stock": {
       const goodsList = db.getAllGoods();
       if (goodsList.length === 0) {
         console.log("⚠️ No goods found.");
       } else {
         let totalQuantity = 0;
-        goodsList.forEach(good => {
+        goodsList.forEach((good) => {
           console.log(`Good: ${good.name}, Quantity: ${good.quantity}`);
           totalQuantity += good.quantity;
         });
@@ -102,32 +115,38 @@ export async function manageGoods(db: Database) {
       break;
     }
 
-    case 'Back':
+    case "Back":
       return;
   }
 
   await manageGoods(db);
 }
 
-export async function searchGood(db: Database) {
+/**
+ * Busca bienes (Goods) en la base de datos según diferentes criterios.
+ * @param db - Instancia de la base de datos.
+ */
+export async function searchGood(db: Database): Promise<void> {
   const { searchType } = await inquirer.prompt([
     {
-      type: 'list',
-      name: 'searchType',
-      message: 'Search goods by:',
-      choices: ['Name', 'Description'],
+      type: "list",
+      name: "searchType",
+      message: "Search goods by:",
+      choices: ["Name", "Description"],
     },
   ]);
 
   let goods = db.getAllGoods();
   const { searchQuery } = await inquirer.prompt([
-    { type: 'input', name: 'searchQuery', message: `Enter the ${searchType.toLowerCase()}:` },
+    { type: "input", name: "searchQuery", message: `Enter the ${searchType.toLowerCase()}:` },
   ]);
-    if (searchType === 'Name') {
-      goods = goods.filter(good => good.name.toLowerCase().startsWith(searchQuery.toLowerCase()));
-    } else if (searchType === 'Description') {
-      goods = goods.filter(good => good.description.toLowerCase().startsWith(searchQuery.toLowerCase()));
-    }
+  if (searchType === "Name") {
+    goods = goods.filter((good) => good.name.toLowerCase().startsWith(searchQuery.toLowerCase()));
+  } else if (searchType === "Description") {
+    goods = goods.filter((good) =>
+      good.description.toLowerCase().startsWith(searchQuery.toLowerCase()),
+    );
+  }
 
   if (goods.length === 0) {
     console.log("⚠️ No matching goods found.");
@@ -136,31 +155,40 @@ export async function searchGood(db: Database) {
 
   const { sortOption } = await inquirer.prompt([
     {
-      type: 'list',
-      name: 'sortOption',
-      message: 'Sort by:',
-      choices: ['Alphabetically (A-Z)', 'Alphabetically (Z-A)', 'Price (Low to High)', 'Price (High to Low)'],
+      type: "list",
+      name: "sortOption",
+      message: "Sort by:",
+      choices: [
+        "Alphabetically (A-Z)",
+        "Alphabetically (Z-A)",
+        "Price (Low to High)",
+        "Price (High to Low)",
+      ],
     },
   ]);
 
   switch (sortOption) {
-    case 'Alphabetically (A-Z)':
+    case "Alphabetically (A-Z)":
       goods.sort((a, b) => a.name.localeCompare(b.name));
       break;
-    case 'Alphabetically (Z-A)':
+    case "Alphabetically (Z-A)":
       goods.sort((a, b) => b.name.localeCompare(a.name));
       break;
-    case 'Price (Low to High)':
+    case "Price (Low to High)":
       goods.sort((a, b) => a.value - b.value);
       break;
-    case 'Price (High to Low)':
+    case "Price (High to Low)":
       goods.sort((a, b) => b.value - a.value);
       break;
   }
   console.table(goods);
 }
 
-async function updateGood(db: Database) {
+/**
+ * Actualiza un bien (Good) en la base de datos.
+ * @param db - Instancia de la base de datos.
+ */
+async function updateGood(db: Database): Promise<void> {
   const goodsList = db.getAllGoods();
   if (goodsList.length === 0) {
     console.log("⚠️ No goods available to update.");
@@ -181,7 +209,7 @@ async function updateGood(db: Database) {
       type: "list",
       name: "fieldToUpdate",
       message: "Which field do you want to update?",
-      choices: ["Name", "Description", "Material", "Weight", "Value", "Quantity",  "Cancel"],
+      choices: ["Name", "Description", "Material", "Weight", "Value", "Quantity", "Cancel"],
     },
   ]);
 

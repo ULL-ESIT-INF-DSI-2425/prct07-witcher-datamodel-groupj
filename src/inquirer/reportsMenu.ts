@@ -1,18 +1,22 @@
 import inquirer from "inquirer";
 import { Database } from "../database/database.js";
 
-export async function manageReports(db: Database) {
+/**
+ * Administra las operaciones relacionadas con la generación de reportes.
+ * @param db - Instancia de la base de datos.
+ */
+export async function manageReports(db: Database): Promise<void> {
   const { reportAction } = await inquirer.prompt([
     {
-      type: 'list',
-      name: 'reportAction',
-      message: 'Select a report:',
-      choices: ['Best-selling item', 'Most in-demand item', 'Client transaction history', 'Back']
-    }
+      type: "list",
+      name: "reportAction",
+      message: "Select a report:",
+      choices: ["Best-selling item", "Most in-demand item", "Client transaction history", "Back"],
+    },
   ]);
 
   switch (reportAction) {
-    case 'Best-selling item': {
+    case "Best-selling item": {
       const purchases = db.getAllPurchases();
       if (purchases.length === 0) {
         console.log("⚠️ No purchases found.");
@@ -38,11 +42,13 @@ export async function manageReports(db: Database) {
         }
       }
       if (bestSelling) {
-        console.log(`⭐ Best-selling item: ${bestSelling.name} with ${bestSelling.total} units purchased.`);
+        console.log(
+          `⭐ Best-selling item: ${bestSelling.name} with ${bestSelling.total} units purchased.`,
+        );
       }
       break;
     }
-    case 'Most in-demand item': {
+    case "Most in-demand item": {
       const sales = db.getAllSales();
       if (sales.length === 0) {
         console.log("⚠️ No sales found.");
@@ -67,14 +73,16 @@ export async function manageReports(db: Database) {
         }
       }
       if (mostInDemand) {
-        console.log(`🔥 Most in-demand item: ${mostInDemand.name} with ${mostInDemand.total} units sold.`);
+        console.log(
+          `🔥 Most in-demand item: ${mostInDemand.name} with ${mostInDemand.total} units sold.`,
+        );
       }
       break;
     }
 
-    case 'Client transaction history': {
+    case "Client transaction history": {
       const { clientId } = await inquirer.prompt([
-        { type: 'number', name: 'clientId', message: 'Enter client ID:' }
+        { type: "number", name: "clientId", message: "Enter client ID:" },
       ]);
 
       const merchant = db.getMerchantByID(clientId);
@@ -89,36 +97,39 @@ export async function manageReports(db: Database) {
       let transactions: any[] = [];
 
       if (merchant) {
-        const clientPurchases = db.getAllPurchases()
-          .filter(purchase => purchase.merchantId === clientId)
-          .map(purchase => ({
-            Type: 'Purchase',
+        const clientPurchases = db
+          .getAllPurchases()
+          .filter((purchase) => purchase.merchantId === clientId)
+          .map((purchase) => ({
+            Type: "Purchase",
             ID: purchase.id,
             Date: purchase.date,
             TotalAmount: purchase.totalAmount,
-            Items: purchase.itemsPurchased.map(item => item.name).join(", ")
+            Items: purchase.itemsPurchased.map((item) => item.name).join(", "),
           }));
-        const clientReturns = db.getAllReturns()
-          .filter(ret => ret.customerId === clientId)
-          .map(ret => ({
-            Type: 'Return',
+        const clientReturns = db
+          .getAllReturns()
+          .filter((ret) => ret.customerId === clientId)
+          .map((ret) => ({
+            Type: "Return",
             ID: ret.id,
             Date: ret.date,
             TotalAmount: "-",
-            Items: ret.itemsReturned.map(item => item.name).join(", ")
+            Items: ret.itemsReturned.map((item) => item.name).join(", "),
           }));
         transactions = transactions.concat(clientPurchases, clientReturns);
       }
 
       if (hunter) {
-        const clientSales = db.getAllSales()
-          .filter(sale => sale.hunterId === clientId)
-          .map(sale => ({
-            Type: 'Sale',
+        const clientSales = db
+          .getAllSales()
+          .filter((sale) => sale.hunterId === clientId)
+          .map((sale) => ({
+            Type: "Sale",
             ID: sale.id,
             Date: sale.date,
             TotalAmount: sale.totalAmount,
-            Items: sale.itemsSold.map(item => item.name).join(", ")
+            Items: sale.itemsSold.map((item) => item.name).join(", "),
           }));
         transactions = transactions.concat(clientSales);
       }
@@ -131,7 +142,7 @@ export async function manageReports(db: Database) {
       break;
     }
 
-    case 'Back':
+    case "Back":
       return;
   }
   await manageReports(db);

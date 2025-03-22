@@ -3,23 +3,35 @@ import { Database } from "../database/database.js";
 import { Hunter } from "../characters/hunter.js";
 import { isNumber } from "lodash";
 
-export async function manageHunters(db: Database) {
+
+/**
+ * Administra las operaciones relacionadas con los cazadores (Hunters).
+ * @param db - Instancia de la base de datos.
+ */
+export async function manageHunters(db: Database): Promise<void> {
   const { action } = await inquirer.prompt([
     {
-      type: 'list',
-      name: 'action',
-      message: 'Select an action for Hunters',
-      choices: ['Add a Hunter', 'List Hunters', 'Delete a Hunter', 'Update Hunter', 'Search Hunter','Back'],
+      type: "list",
+      name: "action",
+      message: "Select an action for Hunters",
+      choices: [
+        "Add a Hunter",
+        "List Hunters",
+        "Delete a Hunter",
+        "Update Hunter",
+        "Search Hunter",
+        "Back",
+      ],
     },
   ]);
 
   switch (action) {
-    case 'Add a Hunter': {
+    case "Add a Hunter": {
       try {
         const newHunter = await inquirer.prompt([
-          { type: 'input', name: 'name', message: 'Hunter\'s name:' },
-          { type: 'input', name: 'race', message: 'Hunter\'s race (e.g., Human, Elf, Dwarf):' },
-          { type: 'input', name: 'location', message: 'Hunter\'s location:' },
+          { type: "input", name: "name", message: "Hunter's name:" },
+          { type: "input", name: "race", message: "Hunter's race (e.g., Human, Elf, Dwarf):" },
+          { type: "input", name: "location", message: "Hunter's location:" },
         ]);
 
         if (isNaN(newHunter.name) || isNaN(newHunter.race) || isNaN(newHunter.location)) {
@@ -30,11 +42,11 @@ export async function manageHunters(db: Database) {
           db.getAllHunters().length + 1,
           newHunter.name,
           newHunter.race,
-          newHunter.location
+          newHunter.location,
         );
 
         db.addHunter(hunter);
-        console.log('✅ Hunter added');
+        console.log("✅ Hunter added");
       } catch (error) {
         if (error instanceof Error) {
           console.error("❌ Error adding hunter:", error.message);
@@ -44,15 +56,15 @@ export async function manageHunters(db: Database) {
       }
       break;
     }
-    case 'Update Hunter':
+    case "Update Hunter":
       await updateHunter(db);
       break;
 
-    case 'Search Hunter':
+    case "Search Hunter":
       await searchHunter(db);
       break;
 
-    case 'List Hunters':
+    case "List Hunters":
       if (db.getAllHunters().length === 0) {
         console.log("⚠️ No hunters found.");
       } else {
@@ -60,7 +72,7 @@ export async function manageHunters(db: Database) {
       }
       break;
 
-    case 'Delete a Hunter': {
+    case "Delete a Hunter": {
       const huntersList = db.getAllHunters();
       if (huntersList.length === 0) {
         console.log("⚠️ No hunters available to delete.");
@@ -69,11 +81,16 @@ export async function manageHunters(db: Database) {
 
       const { hunterToDelete } = await inquirer.prompt([
         {
-          type: 'list',
-          name: 'hunterToDelete',
-          message: 'Select the Hunter to delete:',
-          choices: [...huntersList.map(hunter => ({ name: `${hunter.name} (ID: ${hunter.id})`, value: hunter.id })), 
-            { name: "🔙 Back", value: "back" }],
+          type: "list",
+          name: "hunterToDelete",
+          message: "Select the Hunter to delete:",
+          choices: [
+            ...huntersList.map((hunter) => ({
+              name: `${hunter.name} (ID: ${hunter.id})`,
+              value: hunter.id,
+            })),
+            { name: "🔙 Back", value: "back" },
+          ],
         },
       ]);
 
@@ -87,14 +104,18 @@ export async function manageHunters(db: Database) {
       break;
     }
 
-    case 'Back':
+    case "Back":
       return;
   }
 
   await manageHunters(db);
 }
 
-async function searchHunter(db: Database) {
+/**
+ * Busca cazadores (Hunters) en la base de datos según diferentes criterios.
+ * @param db - Instancia de la base de datos.
+ */
+async function searchHunter(db: Database): Promise<void> {
   const { searchType } = await inquirer.prompt([
     {
       type: "list",
@@ -117,17 +138,17 @@ async function searchHunter(db: Database) {
   switch (searchType) {
     case "Name":
       hunters = hunters.filter((hunter) =>
-        hunter.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+        hunter.name.toLowerCase().startsWith(searchQuery.toLowerCase()),
       );
       break;
     case "Race":
       hunters = hunters.filter((hunter) =>
-        hunter.race.toLowerCase().startsWith(searchQuery.toLowerCase())
+        hunter.race.toLowerCase().startsWith(searchQuery.toLowerCase()),
       );
       break;
     case "Location":
       hunters = hunters.filter((hunter) =>
-        hunter.location.toLowerCase().startsWith(searchQuery.toLowerCase())
+        hunter.location.toLowerCase().startsWith(searchQuery.toLowerCase()),
       );
       break;
   }
@@ -139,7 +160,11 @@ async function searchHunter(db: Database) {
   }
 }
 
-async function updateHunter(db: Database) {
+/**
+ * Actualiza un cazador (Hunter) en la base de datos.
+ * @param db - Instancia de la base de datos.
+ */
+async function updateHunter(db: Database): Promise<void> {
   const huntersList = db.getAllHunters();
   if (huntersList.length === 0) {
     console.log("⚠️ No hunters available to update.");

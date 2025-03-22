@@ -3,23 +3,34 @@ import { Database } from "../database/database.js";
 import { Merchant } from "../characters/merchant.js";
 import { isNumber } from "lodash";
 
-export async function manageMerchants(db: Database) {
+/**
+ * Administra las operaciones relacionadas con los comerciantes (Merchants).
+ * @param db - Instancia de la base de datos.
+ */
+export async function manageMerchants(db: Database): Promise<void> {
   const { action } = await inquirer.prompt([
     {
-      type: 'list',
-      name: 'action',
-      message: 'Select an action for Merchants',
-      choices: ['Add a Merchant', 'List Merchants', 'Delete a Merchant', 'Update Merchant', 'Search Merchant' , 'Back'],
+      type: "list",
+      name: "action",
+      message: "Select an action for Merchants",
+      choices: [
+        "Add a Merchant",
+        "List Merchants",
+        "Delete a Merchant",
+        "Update Merchant",
+        "Search Merchant",
+        "Back",
+      ],
     },
   ]);
 
   switch (action) {
-    case 'Add a Merchant': {
+    case "Add a Merchant": {
       try {
         const newMerchant = await inquirer.prompt([
-          { type: 'input', name: 'name', message: 'Merchant\'s name:' },
-          { type: 'input', name: 'type', message: 'Merchant type (e.g., Blacksmith, Alchemist):' },
-          { type: 'input', name: 'location', message: 'Merchant\'s location:' },
+          { type: "input", name: "name", message: "Merchant's name:" },
+          { type: "input", name: "type", message: "Merchant type (e.g., Blacksmith, Alchemist):" },
+          { type: "input", name: "location", message: "Merchant's location:" },
         ]);
 
         if (isNaN(newMerchant.name) || isNaN(newMerchant.type) || isNaN(newMerchant.location)) {
@@ -30,11 +41,11 @@ export async function manageMerchants(db: Database) {
           db.getAllMerchants().length + 1, // Genera un ID único
           newMerchant.name,
           newMerchant.type,
-          newMerchant.location
+          newMerchant.location,
         );
 
         db.addMerchant(merchant);
-        console.log('✅ Merchant added');
+        console.log("✅ Merchant added");
       } catch (error) {
         if (error instanceof Error) {
           console.error("❌ Error adding merchant:", error.message);
@@ -44,15 +55,15 @@ export async function manageMerchants(db: Database) {
       }
       break;
     }
-    case 'Update Merchant':
+    case "Update Merchant":
       await updateMerchant(db);
       break;
-    
-    case 'Search Merchant':
+
+    case "Search Merchant":
       await searchMerchant(db);
       break;
 
-    case 'List Merchants':
+    case "List Merchants":
       if (db.getAllMerchants().length === 0) {
         console.log("⚠️ No merchants found.");
       } else {
@@ -60,7 +71,7 @@ export async function manageMerchants(db: Database) {
       }
       break;
 
-    case 'Delete a Merchant': {
+    case "Delete a Merchant": {
       const merchantsList = db.getAllMerchants();
       if (merchantsList.length === 0) {
         console.log("⚠️ No merchants available to delete.");
@@ -69,12 +80,17 @@ export async function manageMerchants(db: Database) {
 
       const { merchantToDelete } = await inquirer.prompt([
         {
-          type: 'list',
-          name: 'merchantToDelete',
-          message: 'Select the Merchant to delete:',
-          choices: [...merchantsList.map(merchant => ({ name: `${merchant.name} (ID: ${merchant.id})`, value: merchant.id })), 
-            { name: "🔙 Back", value: "back" }],
-          },
+          type: "list",
+          name: "merchantToDelete",
+          message: "Select the Merchant to delete:",
+          choices: [
+            ...merchantsList.map((merchant) => ({
+              name: `${merchant.name} (ID: ${merchant.id})`,
+              value: merchant.id,
+            })),
+            { name: "🔙 Back", value: "back" },
+          ],
+        },
       ]);
 
       if (merchantToDelete === "back") break;
@@ -87,14 +103,18 @@ export async function manageMerchants(db: Database) {
       break;
     }
 
-    case 'Back':
+    case "Back":
       return;
   }
 
   await manageMerchants(db);
 }
 
-export async function searchMerchant(db: Database) {
+/**
+ * Busca comerciantes (Merchants) en la base de datos según diferentes criterios.
+ * @param db - Instancia de la base de datos.
+ */
+export async function searchMerchant(db: Database): Promise<void> {
   const { searchType } = await inquirer.prompt([
     {
       type: "list",
@@ -117,17 +137,17 @@ export async function searchMerchant(db: Database) {
   switch (searchType) {
     case "Name":
       merchants = merchants.filter((merchant) =>
-        merchant.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+        merchant.name.toLowerCase().startsWith(searchQuery.toLowerCase()),
       );
       break;
     case "Type":
       merchants = merchants.filter((merchant) =>
-        merchant.type.toLowerCase().startsWith(searchQuery.toLowerCase())
+        merchant.type.toLowerCase().startsWith(searchQuery.toLowerCase()),
       );
       break;
     case "Location":
       merchants = merchants.filter((merchant) =>
-        merchant.location.toLowerCase().startsWith(searchQuery.toLowerCase())
+        merchant.location.toLowerCase().startsWith(searchQuery.toLowerCase()),
       );
       break;
   }
@@ -139,7 +159,11 @@ export async function searchMerchant(db: Database) {
   }
 }
 
-async function updateMerchant(db: Database) {
+/**
+ * Actualiza un comerciante (Merchant) en la base de datos.
+ * @param db - Instancia de la base de datos.
+ */
+async function updateMerchant(db: Database): Promise<void> {
   const merchantsList = db.getAllMerchants();
   if (merchantsList.length === 0) {
     console.log("⚠️ No merchants available to update.");
