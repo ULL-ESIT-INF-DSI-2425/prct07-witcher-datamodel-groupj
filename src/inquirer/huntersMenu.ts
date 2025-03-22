@@ -1,6 +1,7 @@
 import inquirer from "inquirer";
 import { Database } from "../database/database.js";
 import { Hunter } from "../characters/hunter.js";
+import { isNumber } from "lodash";
 
 export async function manageHunters(db: Database) {
   const { action } = await inquirer.prompt([
@@ -14,21 +15,33 @@ export async function manageHunters(db: Database) {
 
   switch (action) {
     case 'Add a Hunter': {
-      const newHunter = await inquirer.prompt([
-        { type: 'input', name: 'name', message: 'Hunter\'s name:' },
-        { type: 'input', name: 'race', message: 'Hunter\'s race (e.g., Human, Elf, Dwarf):' },
-        { type: 'input', name: 'location', message: 'Hunter\'s location:' },
-      ]);
+      try {
+        const newHunter = await inquirer.prompt([
+          { type: 'input', name: 'name', message: 'Hunter\'s name:' },
+          { type: 'input', name: 'race', message: 'Hunter\'s race (e.g., Human, Elf, Dwarf):' },
+          { type: 'input', name: 'location', message: 'Hunter\'s location:' },
+        ]);
 
-      const hunter = new Hunter(
-        db.getAllHunters().length + 1, // Genera un ID único
-        newHunter.name,
-        newHunter.race,
-        newHunter.location
-      );
+        if (isNaN(newHunter.name) || isNaN(newHunter.race) || isNaN(newHunter.location)) {
+          throw new Error("⚠️ Invalid input: Name, race and location atributes must be filled.");
+        }
 
-      await db.addHunter(hunter);
-      console.log('✅ Hunter added');
+        const hunter = new Hunter(
+          db.getAllHunters().length + 1,
+          newHunter.name,
+          newHunter.race,
+          newHunter.location
+        );
+
+        db.addHunter(hunter);
+        console.log('✅ Hunter added');
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("❌ Error adding hunter:", error.message);
+          break;
+        }
+        console.error("❌ Unexpected error adding hunter");
+      }
       break;
     }
     case 'Update Hunter':
@@ -65,7 +78,11 @@ export async function manageHunters(db: Database) {
       ]);
 
       if (hunterToDelete === "back") break;
-      await db.deleteHunter(hunterToDelete); // Asegurar que sea un número
+      if (!isNumber(hunterToDelete)) {
+        console.error("❌ Not a valid Merchant ID");
+        break;
+      }
+      db.deleteHunter(hunterToDelete);
       console.log("❌ Hunter removed.");
       break;
     }
@@ -173,6 +190,6 @@ async function updateHunter(db: Database) {
       break;
   }
 
-  await db.updateHunter(hunterToUpdate, updateData);
+  db.updateHunter(hunterToUpdate, updateData);
   console.log("✅ Hunter updated successfully!");
 }

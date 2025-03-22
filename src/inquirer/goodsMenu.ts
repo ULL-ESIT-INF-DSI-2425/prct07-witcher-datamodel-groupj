@@ -1,6 +1,8 @@
 import inquirer from "inquirer";
 import { Database } from "../database/database.js";
 import { Good } from "../characters/good.js";
+import { error } from "console";
+import { isNumber } from "lodash";
 
 export async function manageGoods(db: Database) {
   const { action } = await inquirer.prompt([
@@ -14,27 +16,39 @@ export async function manageGoods(db: Database) {
 
   switch (action) {
     case 'Add a Good': {
-      const newGood = await inquirer.prompt([
-        { type: 'input', name: 'name', message: 'Good\'s name:' },
-        { type: 'input', name: 'description', message: 'Description:' },
-        { type: 'input', name: 'material', message: 'Material:' },
-        { type: 'number', name: 'weight', message: 'Weight:' },
-        { type: 'number', name: 'value', message: 'Value in crowns:' },
-        { type: 'number', name: 'quantity', message: 'Good quantity: ' }
-      ]);
+      try {
+        const newGood = await inquirer.prompt([
+          { type: 'input', name: 'name', message: 'Good\'s name:' },
+          { type: 'input', name: 'description', message: 'Description:' },
+          { type: 'input', name: 'material', message: 'Material:' },
+          { type: 'number', name: 'weight', message: 'Weight:' },
+          { type: 'number', name: 'value', message: 'Value in crowns:' },
+          { type: 'number', name: 'quantity', message: 'Good quantity: ' }
+        ]);
 
-      const good = new Good(
-        db.getAllGoods().length + 1, // Genera un ID único
-        newGood.name,
-        newGood.description,
-        newGood.material,
-        newGood.weight,
-        newGood.value,
-        newGood.quantity
-      );
+        if (isNaN(newGood.weight) || isNaN(newGood.value) || isNaN(newGood.quantity)) {
+          throw new Error("⚠️ Invalid input: Weight, value, and quantity must be numbers.");
+        }
 
-      await db.addGood(good);
-      console.log('✅ Good added');
+        const good = new Good(
+          db.getAllGoods().length + 1,
+          newGood.name,
+          newGood.description,
+          newGood.material,
+          newGood.weight,
+          newGood.value,
+          newGood.quantity
+        );
+
+        db.addGood(good);
+        console.log('✅ Good added');
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("❌ Error adding goods:", error.message);
+          break;
+        }
+        console.error("❌ Unexpected error adding goods");
+      }
       break;
     }
 
@@ -64,7 +78,11 @@ export async function manageGoods(db: Database) {
       ]);
 
       if (goodToDelete === "back") break;
-      await db.deleteGood(goodToDelete);
+      if (!isNumber(goodToDelete)) {
+        console.error("❌ Not a valid Good ID");
+        break;
+      }
+      db.deleteGood(goodToDelete);
       console.log("❌ Good removed.");
       break;
     }

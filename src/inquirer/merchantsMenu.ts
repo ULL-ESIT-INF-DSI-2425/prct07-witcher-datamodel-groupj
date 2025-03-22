@@ -1,6 +1,7 @@
 import inquirer from "inquirer";
 import { Database } from "../database/database.js";
 import { Merchant } from "../characters/merchant.js";
+import { isNumber } from "lodash";
 
 export async function manageMerchants(db: Database) {
   const { action } = await inquirer.prompt([
@@ -14,21 +15,33 @@ export async function manageMerchants(db: Database) {
 
   switch (action) {
     case 'Add a Merchant': {
-      const newMerchant = await inquirer.prompt([
-        { type: 'input', name: 'name', message: 'Merchant\'s name:' },
-        { type: 'input', name: 'type', message: 'Merchant type (e.g., Blacksmith, Alchemist):' },
-        { type: 'input', name: 'location', message: 'Merchant\'s location:' },
-      ]);
+      try {
+        const newMerchant = await inquirer.prompt([
+          { type: 'input', name: 'name', message: 'Merchant\'s name:' },
+          { type: 'input', name: 'type', message: 'Merchant type (e.g., Blacksmith, Alchemist):' },
+          { type: 'input', name: 'location', message: 'Merchant\'s location:' },
+        ]);
 
-      const merchant = new Merchant(
-        db.getAllMerchants().length + 1, // Genera un ID único
-        newMerchant.name,
-        newMerchant.type,
-        newMerchant.location
-      );
+        if (isNaN(newMerchant.name) || isNaN(newMerchant.type) || isNaN(newMerchant.location)) {
+          throw new Error("❌ Invalid input: Name, type and location atributes must be filled.");
+        }
 
-      await db.addMerchant(merchant);
-      console.log('✅ Merchant added');
+        const merchant = new Merchant(
+          db.getAllMerchants().length + 1, // Genera un ID único
+          newMerchant.name,
+          newMerchant.type,
+          newMerchant.location
+        );
+
+        db.addMerchant(merchant);
+        console.log('✅ Merchant added');
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("❌ Error adding merchant:", error.message);
+          break;
+        }
+        console.error("❌ Unexpected error adding merchant");
+      }
       break;
     }
     case 'Update Merchant':
@@ -64,9 +77,12 @@ export async function manageMerchants(db: Database) {
           },
       ]);
 
-    if (merchantToDelete === "back") break;
-      
-    await db.deleteMerchant(merchantToDelete); // Asegurar que sea un número
+      if (merchantToDelete === "back") break;
+      if (!isNumber(merchantToDelete)) {
+        console.error("❌ Not a valid Merchant ID");
+        break;
+      }
+      db.deleteMerchant(merchantToDelete);
       console.log("❌ Merchant removed.");
       break;
     }
@@ -174,6 +190,6 @@ async function updateMerchant(db: Database) {
       break;
   }
 
-  await db.updateMerchant(merchantToUpdate, updateData);
+  db.updateMerchant(merchantToUpdate, updateData);
   console.log("✅ Merchant updated successfully!");
 }

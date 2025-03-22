@@ -32,10 +32,15 @@ export class Database { //TODO to document
     constructor() {}
     
     async init() {
-        const dbPath = path.resolve(__dirname, "../../db.json");
-        this.db = await JSONFilePreset<DBSchema>(dbPath, defaultData);
-        await this.db.read();
-        console.log("📦 Posada del Lobo Blanco.");
+        try {
+            const dbPath = path.resolve(__dirname, "../../db.json");
+            this.db = await JSONFilePreset<DBSchema>(dbPath, defaultData);
+            await this.db.read();
+            console.log("📦 Posada del Lobo Blanco.");
+        } catch (e) {
+            console.error("❌ Error al inicializar la base de datos:", e);
+            throw e;
+        }
     }
 
     getAllGoods(): Good[] {
@@ -95,85 +100,88 @@ export class Database { //TODO to document
     }
 
     addGood(good: Good): void {
+        if (!good || typeof good !== "object") throw new Error("El objeto 'good' es inválido.");
         this.db.data.goods.push(good);
-        this.save();
+        this.save().catch(e => console.error("Error al guardar la base de datos:", e));
     }
 
     addMerchant(merchant: Merchant): void {
+        if (!merchant || typeof merchant !== "object") throw new Error("El objeto 'merchant' es inválido.");
         this.db.data.merchants.push(merchant);
-        this.save();
+        this.save().catch(e => console.error("Error al guardar la base de datos:", e));
     }
 
     addHunter(hunter: Hunter): void {
+        if (!hunter || typeof hunter !== "object") throw new Error("El objeto 'hunter' es inválido.");
         this.db.data.hunters.push(hunter);
-        this.save();
+        this.save().catch(e => console.error("Error al guardar la base de datos:", e));
     }
 
     updateGood(id: number, updates: Partial<Good>): void {
         const good = this.getGoodByID(id);
-        if (good) {
-            Object.assign(good, updates);
-            this.save();
-        }
+        if (!good) throw new Error(`No se encontró un Good con ID ${id}`);
+        Object.assign(good, updates);
+        this.save().catch(e => console.error("Error al guardar la base de datos:", e));
     }
 
     updateMerchant(id: number, updates: Partial<Merchant>): void {
         const merchant = this.getMerchantByID(id);
-        if (merchant) {
-            Object.assign(merchant, updates);
-            this.save();
-        }
+        if (!merchant) throw new Error(`No se encontró un Merchant con ID ${id}`);
+        Object.assign(merchant, updates);
+        this.save().catch(e => console.error("Error al guardar la base de datos:", e));
     }
 
     updateHunter(id: number, updates: Partial<Hunter>): void {
         const hunter = this.getHunterByID(id);
-        if (hunter) {
-            Object.assign(hunter, updates);
-            this.save();
-        }
+        if (!hunter) throw new Error(`No se encontró un Hunter con ID ${id}`);
+        Object.assign(hunter, updates);
+        this.save().catch(e => console.error("Error al guardar la base de datos:", e));
     }
 
     deleteGood(id: number): void {
         this.db.data.goods = this.db.data.goods.filter(good => good.id !== id);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
     deleteMerchant(id: number): void {
         this.db.data.merchants = this.db.data.merchants.filter(merchant => merchant.id !== id);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
     deleteHunter(id: number): void {
         this.db.data.hunters = this.db.data.hunters.filter(hunter => hunter.id !== id);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
 
     addSale(sale: Sale): void {
+        if (!sale || typeof sale !== "object") throw new Error("El objeto 'sale' es inválido.");
         this.db.data.sales.push(sale);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
 
     addPurchase(purchase: Purchase): void {
+        if (!purchase || typeof purchase !== "object") throw new Error("El objeto 'purchase' es inválido.");
         this.db.data.purchases.push(purchase);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
 
     addReturn(returnn: Return): void {
+        if (!returnn || typeof returnn !== "object") throw new Error("El objeto 'returnn' es inválido.");
         this.db.data.returns.push(returnn);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
 
     deleteSale(id: number): void {
         this.db.data.sales = this.db.data.sales.filter(sale => sale.id !== id);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
 
     deletePurchase(id: number): void {
         this.db.data.purchases = this.db.data.purchases.filter(purchase => purchase.id !== id);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
 
     deleteReturn(id: number): void {
         this.db.data.returns = this.db.data.returns.filter(returnn => returnn.id !== id);
-        this.save();
+        this.save().catch(error => console.error("Error al guardar la base de datos:", error));
     }
 
     getAllSales(): Sale[] {
