@@ -144,9 +144,9 @@ export class Database {
   }
 
   /**
-   * Busca un comerciante por su ID.
-   * @param id - El ID del comerciante.
-   * @returns El comerciante encontrado o `undefined` si no existe.
+   * Busca un cliente por su nombre.
+   * @param name - nombre del cliente
+   * @returns El cliente encontrado o `undefined` si no existe.
    */
   getHunterByName(name: string): Hunter | undefined {
     return this.db.data.hunters.find((hunter) => hunter.name === name);

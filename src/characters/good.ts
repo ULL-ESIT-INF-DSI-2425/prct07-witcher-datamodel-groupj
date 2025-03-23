@@ -8,7 +8,7 @@ export class Good {
    * @param description - Descripción que detalla el origen y utilidad.
    * @param material - Material principal del bien.
    * @param weight - Peso del bien.
-   * @param price - Valor en coronas.
+   * @param value - Valor en coronas.
    * @param quantity - cantidades de este bien en el stock
    */
   constructor(

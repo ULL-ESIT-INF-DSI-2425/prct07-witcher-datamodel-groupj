@@ -20,7 +20,7 @@
     },
     {
       "id": 4,
-      "name": "test",
+      "name": "Reloj Magico",
       "description": "Contiene información detallada sobre las criaturas del continente.",
       "material": "Pergamino y tintas raras",
       "weight": 1.2,
@@ -161,7 +161,16 @@
       "weight": 2,
       "value": 1300,
       "quantity": 10
-    }
+    },
+    {
+      "id": 20,
+      "name": "Elixir de Raffard el Blanco",
+      "description": "Poción de uso urgente que regenera la vitalidad casi por completo.",
+      "material": "Sangre de ghoul y esencias élficas",
+      "weight": 0.3,
+      "value": 900,
+      "quantity": 5
+    }    
   ],
   "merchants": [
     {
