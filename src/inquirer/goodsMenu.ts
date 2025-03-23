@@ -71,6 +71,14 @@ export async function manageGoods(db: Database): Promise<void> {
         console.table(db.getAllGoods());
       }
       break;
+    
+    case 'Search Goods':
+      await searchGood(db);
+      break;
+
+    case 'Update Good':
+      await updateGood(db);
+      break;
 
     case "Delete a Good": {
       const goodsList = db.getAllGoods();

@@ -221,16 +221,17 @@ describe("Database class", () => {
   });
 
   test("should not update a non-existent merchant", () => {
-    db.updateMerchant(99, { type: "Alchemist" });
-    const merchant = db.getMerchantByID(99);
-    expect(merchant).toBeUndefined();
+    expect(() => {
+      db.updateMerchant(99, { type: "Alchemist" });
+    }).toThrow("No se encontró un Merchant con ID 99");
   });
-
+  
   test("should not update a non-existent hunter", () => {
-    db.updateHunter(99, { location: "Skellige" });
-    const hunter = db.getHunterByID(99);
-    expect(hunter).toBeUndefined();
+    expect(() => {
+      db.updateHunter(99, { location: "Skellige" });
+    }).toThrow("No se encontró un Hunter con ID 99");
   });
+  
 
   test("should not delete a non-existent good", () => {
     db.deleteGood(99);
