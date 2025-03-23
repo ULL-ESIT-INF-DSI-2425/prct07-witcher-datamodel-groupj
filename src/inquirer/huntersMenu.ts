@@ -1,7 +1,8 @@
 import inquirer from "inquirer";
 import { Database } from "../database/database.js";
 import { Hunter } from "../characters/hunter.js";
-import { isNumber } from "lodash";
+import lodash from "lodash";
+const { isNumber } = lodash;
 
 
 /**

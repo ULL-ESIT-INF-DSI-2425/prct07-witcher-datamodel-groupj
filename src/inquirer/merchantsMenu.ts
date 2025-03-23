@@ -1,7 +1,8 @@
 import inquirer from "inquirer";
 import { Database } from "../database/database.js";
 import { Merchant } from "../characters/merchant.js";
-import { isNumber } from "lodash";
+import lodash from "lodash";
+const { isNumber } = lodash;
 
 /**
  * Administra las operaciones relacionadas con los comerciantes (Merchants).

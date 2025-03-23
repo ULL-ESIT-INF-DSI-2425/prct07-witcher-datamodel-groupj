@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "inquirer": "^12.4.3",
+    "lodash": "^4.17.21",
     "lowdb": "^7.0.1",
     "node": "^23.9.0"
   }
