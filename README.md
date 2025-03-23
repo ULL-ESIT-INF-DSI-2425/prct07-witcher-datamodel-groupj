@@ -10,7 +10,7 @@
 
 **Asignatura**: Desarrollo de Sistemas Informáticos
 
-[Enunciado de la práctica 6](https://ull-esit-inf-dsi-2425.github.io/prct07-witcher-dataModel/)
+[Enunciado de la práctica 7](https://ull-esit-inf-dsi-2425.github.io/prct07-witcher-dataModel/)
 
 **The White Wolf Inn** es un sistema de gestión de datos inspirado en el universo de The Witcher.
 Este proyecto permite gestionar bienes, comerciantes, cazadores y transacciones (ventas, compras y devoluciones) en una posada.
