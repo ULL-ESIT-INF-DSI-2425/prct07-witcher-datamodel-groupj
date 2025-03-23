@@ -46,7 +46,7 @@ Este proyecto permite gestionar bienes, comerciantes, cazadores y transacciones 
   - **Exit**: Salir de la aplicación.
 2. Navega por las opciones usando las flechas del teclado y selecciona una opción con `Enter`.
 
-## Estructuta del Proyecto
+## Estructura del Proyecto
 ```bash
 src/
 ├── characters/         # Clases relacionadas con bienes, comerciantes y cazadores.
